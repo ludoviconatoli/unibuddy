@@ -1,4 +1,5 @@
 from project import db
+from project.models.Meetings import Meetings
 
 class Student(db.Model): #sottoclasse di un modello
 
@@ -10,8 +11,6 @@ class Student(db.Model): #sottoclasse di un modello
     surname = db.Column(db.String(30))
     study_course = db.Column(db.String(30), db.ForeignKey('subjects.study_course'))
     university = db.Column(db.String(50), db.ForeignKey('subjects.university'))
-
-    meetings = db.relationship('Meetings', backref='meetings.email_headgroup')
 
     def __init__(self, email, student_id, name, surname, study_course, university):
         self.email = email

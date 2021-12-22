@@ -1,5 +1,10 @@
 from project import db
 
+subjects = db.Table("tutor_subjects",
+    db.Column("tutor_email", db.String(50), db.ForeignKey("tutor.email", primarykey=True)),
+    db.Column("subject_id", db.String(10), db.ForeignKey("subjects.subject_id", primarykey=True))
+)
+
 class Tutor(db.Model): #sottoclasse di un modello
 
     __tablename__ = "tutor"
@@ -12,6 +17,8 @@ class Tutor(db.Model): #sottoclasse di un modello
     university = db.Column(db.String(50), db.ForeignKey('subjects.university'))
 
     meetings = db.relationship('Meetings', backref='meetings.email_tutor')
+    subjects = db.relationship('Subjects', backref='tutor', lazy=True, secondary=subjects)
+
 
     def __init__(self, email, subject_id, tutor_id, name, surname, university):
         self.email = email

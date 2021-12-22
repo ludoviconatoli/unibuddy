@@ -10,11 +10,10 @@ class Subjects(db.Model):
     subject = db.Column(db.String(50))
     teacher = db.Column(db.String(50))
 
-    tutor_subjects = db.relationship('Tutor', backref='tutor.subject_id')
-    tutor_universities = db.relationship('Tutor', backref='tutor.university')
+    university_tutors = db.relationship('Tutor', backref='tutor.university')
     student_universities = db.relationship('Student', backref='student.university')
     student_study_courses = db.relationship('Student', backref='student.study_course')
-    meetings_subjects = db.relationship('Meetings', backref='meetings.subject_id')
+    meetings_subjects = db.relationship('Meetings', backref='meetings.subjects_id')
 
     def __init__(self, subject_id, university, study_course, subject, teacher):
         self.subject_id = subject_id

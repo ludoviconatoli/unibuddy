@@ -1,8 +1,8 @@
 from project import db
 
 subjects = db.Table("tutor_subjects",
-    db.Column("tutor_email", db.String(50), db.ForeignKey("tutor.email", primarykey=True)),
-    db.Column("subject_id", db.String(10), db.ForeignKey("subjects.subject_id", primarykey=True))
+    db.Column("tutor_email", db.String(50), db.ForeignKey("tutor.email"), primary_key=True),
+    db.Column("subject_id", db.String(10), db.ForeignKey("subjects.subject_id"), primary_key=True)
 )
 
 class Tutor(db.Model): #sottoclasse di un modello
@@ -14,7 +14,7 @@ class Tutor(db.Model): #sottoclasse di un modello
     tutor_id = db.Column(db.String(10), nullable=False)
     name = db.Column(db.String(30))
     surname = db.Column(db.String(30))
-    university = db.Column(db.String(50), db.ForeignKey('subjects.university'))
+    university = db.Column(db.String(50), db.ForeignKey("universities.name"))
 
     meetings = db.relationship('Meetings', backref='meetings.email_tutor')
     subjects = db.relationship('Subjects', backref='tutor', lazy=True, secondary=subjects)
@@ -29,5 +29,4 @@ class Tutor(db.Model): #sottoclasse di un modello
         self.university = university
 
     def __repr__(self):
-        return '\nTutor: ' + {self.tutor_id} + ', name: ' + {self.name} + \
-               ', surname: ' + {self.surname} + ', email: ' + {self.email} + ', subject: ' + {self.subject_id}
+        return ('\nTutor: ' + self.tutor_id + ', name: ' + self.name + ', surname: ' + self.surname + ', email: ' + self.email + ', subject: ' + self.subject_id)

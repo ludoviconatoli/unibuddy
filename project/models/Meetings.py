@@ -1,8 +1,8 @@
 from project import db
 
 students = db.Table("meeting_students",
-        db.Column("meetings_id", db.Integer, db.ForeignKey("meetings.id", primarykey=True)),
-        db.Column("student_email", db.String(50), db.ForeignKey("student.email", primarykey=True))
+        db.Column("meetings_id", db.Integer, db.ForeignKey("meetings.id"), primary_key=True),
+        db.Column("student_email", db.String(50), db.ForeignKey("student.email"), primary_key=True)
 )
 
 class Meetings(db.Model):
@@ -10,7 +10,7 @@ class Meetings(db.Model):
     __tablename__ = "meetings"
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    university = db.Column(db.String(50), db.ForeignKey('subjects.university'))
+    university = db.Column(db.String(50), db.ForeignKey('universities.name'))
     subject_id = db.Column(db.String(10), db.ForeignKey('subjects.subject_id'))
     email_tutor = db.Column(db.String(50), db.ForeignKey('tutor.email'))
     email_headgroup = db.Column(db.String(50), db.ForeignKey('student.email'))
@@ -26,6 +26,5 @@ class Meetings(db.Model):
         self.max_members = max_members
 
     def __repr__(self):
-        return '\nGroup: ' + {self.id} + ' in ' + {self.university} + \
-               ' of ' + {self.subject_id} + ', tutor: ' + {self.email_tutor}
+        return ('\nGroup: ' + str(self.id) + ' in ' + self.university + ' of ' + self.subject_id + ' subject, tutor: ' + self.email_tutor)
 

@@ -23,3 +23,11 @@ class Subjects(db.Model):
 
     def __repr__(self):
         return ('\nSubject: ' + self.subject_id + ' ' + self.subject + ', teached in ' + self.university + ' by ' + self.teacher)
+
+    def getUniversity(self):
+        if self.university:
+            return self.university
+
+    def getSubjectId(self):
+        if self.subject_id:
+            return self.subject_id

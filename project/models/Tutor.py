@@ -30,3 +30,18 @@ class Tutor(db.Model): #sottoclasse di un modello
 
     def __repr__(self):
         return ('\nTutor: ' + self.tutor_id + ', name: ' + self.name + ', surname: ' + self.surname + ', email: ' + self.email + ', subject: ' + self.subject_id)
+
+    def getEmail(self):
+        if self.email:
+            return self.email
+
+    def getUniversity(self):
+        if self.university:
+            return self.university
+
+    def getSubjects(self):
+        s = ""
+        if self.subjects:
+            for i in self.subjects:
+                s = s + ", " + i
+            return s

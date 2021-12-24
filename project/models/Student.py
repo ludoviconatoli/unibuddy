@@ -29,3 +29,11 @@ class Student(db.Model): #sottoclasse di un modello
 
     def __repr__(self):
         return ('\nStudent: ' + self.student_id + ', name: ' + self.name + ', surname: ' + self.surname + ', email: ' + self.email)
+
+    def getEmail(self):
+        if self.email:
+            return self.email
+
+    def getUniversity(self):
+        if self.university:
+            return self.university

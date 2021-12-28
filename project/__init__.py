@@ -9,7 +9,6 @@ app = Flask(__name__, static_folder="static")
 
 Bootstrap(app)
 
-DATABASE = ''
 app.config["SECRET_KEY"] = "chiavesupersegreta"
 
 basedir = os.path.abspath(os.path.dirname(__file__))

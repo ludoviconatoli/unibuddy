@@ -1,14 +1,16 @@
-import re
-
-from flask import Flask, session, redirect, url_for, flash
+from flask import Flask, session, redirect, url_for, flash, request
 from flask import render_template
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, ValidationError
 
 from project import app
-from project.models import Student
-
+from project.models.Student import Student
+from project.models.Subjects import Subjects
+from project.models.Meetings import Meetings
+from project.models.Tutor import Tutor
+from project.models.University import University
+from project import db
 
 @app.route('/')
 def index():
@@ -19,12 +21,11 @@ class FormLogin(FlaskForm):
     password = PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("Sign in")
 
-@app.route('/login/', methods=["POST", "GET"])
+@app.route('/login/', methods=["GET", "POST"])
 def login():
     login_form = FormLogin()
-
     if login_form.validate_on_submit():
-        user_email = Student.query.filter_by(email=login_form.email.data).first()
+        user_email = Student.query.filter_by(email=login_form.username.data).first()
         if user_email:
             session['email'] = user_email.email
             session['student_id'] = user_email.student_id
@@ -33,9 +34,10 @@ def login():
             session['surname'] = user_email.surname
             session['study_course'] = user_email.study_course
             session['university'] = user_email.university
+            flash('Login successful')
             return redirect(url_for('index'))
 
-    return render_template("login.html", login_form=login_form)
+    return render_template('login.html', logform=login_form)
 
 @app.route('/logout/')
 def logout():

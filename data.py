@@ -44,5 +44,5 @@ db.session.add(meet1)
 db.session.commit()
 
 
-courses = Subjects.query.all()
+courses = Student.query.filter_by(email='s302572@studenti.polito.it').first()
 print courses

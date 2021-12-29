@@ -21,6 +21,12 @@ class FormLogin(FlaskForm):
     password = PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("Sign in")
 
+class FormLogout(FlaskForm):
+    submit = SubmitField("Logout")
+
+class FormGroups(FlaskForm):
+    submit = SubmitField("Join")
+
 @app.route('/login/', methods=["GET", "POST"])
 def login():
     login_form = FormLogin()
@@ -34,15 +40,23 @@ def login():
             session['surname'] = user_email.surname
             session['study_course'] = user_email.study_course
             session['university'] = user_email.university
-            flash('Login successful')
             return redirect(url_for('index'))
 
     return render_template('login.html', logform=login_form)
 
-@app.route('/logout/')
+@app.route('/logout/', methods=["GET", "POST"])
 def logout():
-    session.clear()
-    return redirect(url_for('start.html'))
+    logout_form = FormLogout()
+    if logout_form.validate_on_submit():
+        session.clear()
+        return redirect(url_for('index'))
+
+    return render_template('login.html', logform = logout_form)
+
+@app.route('/groups')
+def groups():
+    meet = Meetings.query.filter_by(university=session.get('university'))
+    return render_template('groups.html', meet=meet)
 
 if __name__ == '__main__':
     app.run(debug=True)

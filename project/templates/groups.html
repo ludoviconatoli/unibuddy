@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if session['logged'] %}
+        <table align="center" cellspacing="5">
+            <tr>GROUPS</tr>
+            {% for i in meet %}
+                <tr>
+                    <td>{{ i }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div class="w3-center">
+            <h1>ERROR</h1>
+            <p>Before seeing the study groups you have to sign in</p>
+        </div>
+    {% endif %}
+{% endblock content %}

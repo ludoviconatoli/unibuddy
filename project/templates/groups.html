@@ -2,11 +2,29 @@
 {% block content %}
     {% if session['logged'] %}
         <table align="center" cellspacing="5">
-            <tr>GROUPS</tr>
+            <tr ><th colspan="8">GROUPS</th></tr>
+            <tr>
+                <td><b>id group</b></td>
+                <td><b>university</b></td>
+                <td><b>subject_id</b></td>
+                <td><b>email tutor</b></td>
+                <td><b>email headgroup</b></td>
+                <td><b>max members</b></td>
+                <td><b>num participants</b></td>
+            </tr>
             {% for i in meet %}
-                <tr>
-                    <td>{{ i }}</td>
-                </tr>
+                {% if i.max_members != i.num_participants %}
+                    <tr>
+                        <td>{{ i.id }}</td>
+                        <td>{{ i.university }}</td>
+                        <td>{{ i.subject_id }}</td>
+                        <td>{{ i.email_tutor }}</td>
+                        <td>{{ i.email_headgroup }}</td>
+                        <td>{{ i.max_members }}</td>
+                        <td>{{ i.num_participants }}</td>
+                        <td><input type="button" name="join" value="join"></td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </table>
     {% else %}

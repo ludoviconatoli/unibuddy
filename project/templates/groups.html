@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if session['logged'] %}
+        <form action="/groups" method="post">
         <table align="center" cellspacing="5">
             <tr ><th colspan="8">GROUPS</th></tr>
             <tr>
                 <td><b>id group</b></td>
                 <td><b>university</b></td>
-                <td><b>subject_id</b></td>
+                <td><b>subject</b></td>
                 <td><b>email tutor</b></td>
                 <td><b>email headgroup</b></td>
                 <td><b>max members</b></td>
@@ -17,16 +18,21 @@
                     <tr>
                         <td>{{ i.id }}</td>
                         <td>{{ i.university }}</td>
-                        <td>{{ i.subject_id }}</td>
+                        {% for k in subject %}
+                            {% if k.subject_id == i.subject_id %}
+                                <td>{{ k.subject }}</td>
+                            {% endif %}
+                        {%  endfor %}
                         <td>{{ i.email_tutor }}</td>
                         <td>{{ i.email_headgroup }}</td>
                         <td>{{ i.max_members }}</td>
                         <td>{{ i.num_participants }}</td>
-                        <td><input type="button" name="join" value="join"></td>
+                        <td>{{ gform.submit() }}</td>
                     </tr>
                 {% endif %}
             {% endfor %}
         </table>
+        </form>
     {% else %}
         <div class="w3-center">
             <h1>ERROR</h1>

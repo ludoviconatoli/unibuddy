@@ -51,12 +51,22 @@ def logout():
         session.clear()
         return redirect(url_for('index'))
 
-    return render_template('login.html', logform = logout_form)
+    return render_template('login.html', logform=logout_form)
 
-@app.route('/groups')
+@app.route('/groups/')
 def groups():
     meet = Meetings.query.filter_by(university=session.get('university'))
-    return render_template('groups.html', meet=meet)
+    subject=[]
+    for i in meet:
+        subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'))
+
+    gform = FormGroups()
+    return render_template('groups.html', meet=meet, gform=gform, subject=subject)
+
+@app.route('/groups/join/', methods=["GET", "POST"])
+def join():
+
+    return render_template('groups.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

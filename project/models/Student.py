@@ -10,6 +10,7 @@ class Student(db.Model): #sottoclasse di un modello
     __tablename__ = "student"
 
     email = db.Column(db.String(50), primary_key=True)
+    password = db.Column(db.String(50))
     student_id = db.Column(db.String(10), nullable=False)
     name = db.Column(db.String(30))
     surname = db.Column(db.String(30))
@@ -19,8 +20,9 @@ class Student(db.Model): #sottoclasse di un modello
     subjects = db.relationship("Subjects", backref="student", lazy=True, secondary=subjects)
     headgroups = db.relationship("Meetings", backref="meetings.email_headgroup")
 
-    def __init__(self, email, student_id, name, surname, study_course, university):
+    def __init__(self, email, password, student_id, name, surname, study_course, university):
         self.email = email
+        self.password = password
         self.student_id = student_id
         self.name = name
         self.surname = surname

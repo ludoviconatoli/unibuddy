@@ -1,7 +1,7 @@
-from flask import Flask, session, redirect, url_for, flash, request
+from flask import Flask, session, redirect, url_for
 from flask import render_template
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, ValidationError
 
 from project import app
@@ -32,7 +32,7 @@ def login():
     login_form = FormLogin()
     if login_form.validate_on_submit():
         user_email = Student.query.filter_by(email=login_form.username.data).first()
-        if user_email:
+        if user_email and user_email.password == login_form.password.data:
             session['email'] = user_email.email
             session['student_id'] = user_email.student_id
             session['logged'] = True

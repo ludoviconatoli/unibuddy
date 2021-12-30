@@ -16,17 +16,22 @@ class Meetings(db.Model):
     email_headgroup = db.Column(db.String(50), db.ForeignKey('student.email'))
     max_members = db.Column(db.Integer())
     num_participants = db.Column(db.Integer())
+    date = db.Column(db.DateTime())
+    hour = db.Column(db.Time())
+
 
     students = db.relationship("Student", backref="meetings", lazy=True, secondary=students)
 
-    def __init__(self, university, subject_id, email_tutor, email_headgroup, max_members, num_participants):
+    def __init__(self, university, subject_id, email_tutor, email_headgroup, max_members, num_participants, date, hour):
         self.university = university
         self.subject_id = subject_id
         self.email_tutor = email_tutor
         self.email_headgroup = email_headgroup
         self.max_members = max_members
         self.num_participants = num_participants
+        self.date = date
+        self.hour = hour
 
     def __repr__(self):
-        return ('\nGroup: ' + str(self.id) + ' in ' + self.university + ' of ' + self.subject_id + ' subject, tutor: ' + self.email_tutor)
+        return ('\nGroup: ' + str(self.id) + ' in ' + self.university + ' of ' + self.subject_id + ' subject, tutor: ' + self.email_tutor + ' in ' + str(self.date))
 

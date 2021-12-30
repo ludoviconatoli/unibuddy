@@ -1,3 +1,5 @@
+import datetime
+
 from project import db
 from project.models.Tutor import Tutor
 from project.models.Student import Student
@@ -22,9 +24,9 @@ db.session.commit()
 db.session.add(subject_is)
 db.session.commit()
 
-stud1 = Student("s302572@studenti.polito.it", "s302572", "Ludovico", "Natoli", "Management Engineering", "Politecnico di Torino")
-stud2 = Student("s295977@studenti.polito.it", "s295977", "Michele", "Chiantera", "Management Engineering", "Politecnico di Torino")
-stud3 = Student("s302249@studenti.polito.it", "s302249", "Davide", "Decurti", "Management Engineering", "Politecnico di Torino")
+stud1 = Student("s302572@studenti.polito.it", "Pippo9!", "s302572", "Ludovico", "Natoli", "Management Engineering", "Politecnico di Torino")
+stud2 = Student("s295977@studenti.polito.it", "Pluto9!", "s295977", "Michele", "Chiantera", "Management Engineering", "Politecnico di Torino")
+stud3 = Student("s302249@studenti.polito.it", "Rossi9!", "s302249", "Davide", "Decurti", "Management Engineering", "Politecnico di Torino")
 
 stud1.subjects = [subject_eco, subject_is]
 stud2.subjects = [subject_eco]
@@ -37,12 +39,11 @@ db.session.commit()
 db.session.add(stud3)
 db.session.commit()
 
-meet1 = Meetings("Politecnico di Torino", "02PDWPH", "", "s302249@studenti.polito.it", 10, 2)
+meet1 = Meetings("Politecnico di Torino", "02PDWPH", "", "s302249@studenti.polito.it", 10, 2, datetime.date(2022, 01, 10).day, datetime.time(16, 30))
 meet1.students = [stud3, stud1]
 
 db.session.add(meet1)
 db.session.commit()
 
-
-courses = Student.query.filter_by(email='s302572@studenti.polito.it').first()
+courses = Meetings.query.filter_by().first()
 print courses

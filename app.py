@@ -1,7 +1,9 @@
-from flask import Flask, session, redirect, url_for
+from datetime import date
+
+from flask import Flask, session, redirect, url_for, flash
 from flask import render_template
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, ValidationError
 
 from project import app
@@ -26,6 +28,9 @@ class FormLogout(FlaskForm):
 
 class FormGroups(FlaskForm):
     submit = SubmitField("Join")
+
+class FormJoin(FlaskForm):
+    chat = TextAreaField("chat")
 
 @app.route('/login/', methods=["GET", "POST"])
 def login():
@@ -53,7 +58,7 @@ def logout():
 
     return render_template('login.html', logform=logout_form)
 
-@app.route('/groups/')
+@app.route('/groups/', methods=["GET", "POST"])
 def groups():
     meet = Meetings.query.filter_by(university=session.get('university'))
     subject=[]
@@ -61,12 +66,28 @@ def groups():
         subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'))
 
     gform = FormGroups()
-    return render_template('groups.html', meet=meet, gform=gform, subject=subject)
+    today = date.today()
 
-@app.route('/groups/join/', methods=["GET", "POST"])
-def join():
+    return render_template('groups.html', meet=meet, gform=gform, subject=subject, today=today)
 
-    return render_template('groups.html')
+@app.route('/groups/<int:id>/')
+def join(id):
+    group = Meetings.query.filter_by(id=id).first()
+
+    user = Student.query.filter_by(email=session.get('email')).first()
+    for i in group.students:
+        if i.email == session.get('email'):
+            flash('You are already in this group')
+            return redirect(url_for('groups'))
+
+    group.students.append(user)
+    db.session.commit()
+    group.num_participants += 1
+    db.session.commit()
+
+    group = Meetings.query.filter_by(id=id).first()
+    jform = FormJoin()
+    return render_template('join.html', group=group, jform=jform)
 
 if __name__ == '__main__':
     app.run(debug=True)

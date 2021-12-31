@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if session['logged'] %}
-        <form action="/groups" method="post">
+        <form action="/groups/{{ 2 }}" method="post">
         <table align="center" cellspacing="5">
-            <tr ><th colspan="8">GROUPS</th></tr>
+            <tr ><th colspan="10">GROUPS</th></tr>
             <tr>
                 <td><b>id group</b></td>
                 <td><b>university</b></td>
@@ -12,9 +12,11 @@
                 <td><b>email headgroup</b></td>
                 <td><b>max members</b></td>
                 <td><b>num participants</b></td>
+                <td><b>day</b></td>
+                <td><b>hour</b></td>
             </tr>
             {% for i in meet %}
-                {% if i.max_members != i.num_participants %}
+                {% if i.max_members > i.num_participants and i.date > today %}
                     <tr>
                         <td>{{ i.id }}</td>
                         <td>{{ i.university }}</td>

@@ -16,7 +16,7 @@ class Meetings(db.Model):
     email_headgroup = db.Column(db.String(50), db.ForeignKey('student.email'))
     max_members = db.Column(db.Integer())
     num_participants = db.Column(db.Integer())
-    date = db.Column(db.DateTime())
+    date = db.Column(db.Date())
     hour = db.Column(db.Time())
 
 

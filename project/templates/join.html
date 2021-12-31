@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+    <table align="center" cellspacing="5">
+        <tr>
+            <td><b>id group</b></td>
+            <td><b>university</b></td>
+            <td><b>subject</b></td>
+            <td><b>email tutor</b></td>
+            <td><b>email headgroup</b></td>
+            <td><b>max members</b></td>
+            <td><b>num participants</b></td>
+            <td><b>day</b></td>
+            <td><b>hour</b></td>
+        </tr>
+        <tr>
+            <td>{{ group.id }}</td>
+            <td>{{ group.university }}</td>
+            <td>{{ group.subject_id }}</td>
+            <td>{{ group.email_tutor }}</td>
+            <td>{{ group.email_headgroup }}</td>
+            <td>{{ group.max_members }}</td>
+            <td>{{ group.num_participants }}</td>
+            <td>{{ group.date }}</td>
+            <td>{{ group.hour }}</td>
+        </tr>
+    </table>
+    <div class="container">
+        {{ jform.chat() }}
+    </div>
+{% endblock content %}

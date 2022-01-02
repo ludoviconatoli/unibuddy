@@ -24,9 +24,10 @@
             <td>{{ group.hour }}</td>
         </tr>
     </table>
-    <form action="" method="post">
-        <div class="container">
+    <form action="/join" method="post">
+        <div class="container w3-center">
             {{ jform.chat() }}
+            {{ jform.submit() }}
         </div>
     </form>
 {% endblock content %}

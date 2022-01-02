@@ -30,6 +30,7 @@ class FormLogout(FlaskForm):
 
 class FormJoin(FlaskForm):
     chat = TextAreaField("chat")
+    submit = SubmitField("submit")
 
 @app.route('/login/', methods=["GET", "POST"])
 def login():
@@ -87,6 +88,32 @@ def join(id):
 
     group = Meetings.query.filter_by(id=id).first()
     jform = FormJoin()
+
+    if jform.validate_on_submit():
+        return redirect(url_for())
+
+    return render_template('join.html', group=group, jform=jform)
+
+@app.route('/mygroups/')
+def mygroups():
+    meet = Meetings.query.filter_by(university=session.get('university'))
+    user = Student.query.filter_by(email=session.get('email')).first()
+    subject = []
+    mymeets = []
+
+    for i in meet:
+        for k in i.students:
+            if k.email == session.get('email'):
+                subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'))
+                mymeets += i
+
+    return render_template('mygroups.html', mymeets=mymeets, subject=subject)
+
+@app.route('/mygroups/<int:id>')
+def select(id):
+    group = Meetings.query.filter_by(id=id).first()
+    jform = FormJoin()
+
     return render_template('join.html', group=group, jform=jform)
 
 if __name__ == '__main__':

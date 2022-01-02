@@ -11,6 +11,14 @@
     {% else %}
         <h1>LOGIN</h1>
         <div class="w3-row-padding w3-padding-64 w3-container w3-center">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                 {% for message in messages %}
+                    <b>{{ message }}</b>
+                 {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <form action="/login" method="POST">
             {{ logform.hidden_tag() }}<br>
             {{ logform.username.label }}{{ logform.username() }}<br>

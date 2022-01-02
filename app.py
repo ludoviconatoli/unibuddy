@@ -14,6 +14,8 @@ from project.models.Tutor import Tutor
 from project.models.University import University
 from project import db
 
+#bcrypt = Bcrypt(app)
+
 @app.route('/')
 def index():
     return render_template("start.html")
@@ -25,9 +27,6 @@ class FormLogin(FlaskForm):
 
 class FormLogout(FlaskForm):
     submit = SubmitField("Logout")
-
-class FormGroups(FlaskForm):
-    submit = SubmitField("Join")
 
 class FormJoin(FlaskForm):
     chat = TextAreaField("chat")
@@ -46,6 +45,8 @@ def login():
             session['study_course'] = user_email.study_course
             session['university'] = user_email.university
             return redirect(url_for('index'))
+        else:
+            flash('Login error')
 
     return render_template('login.html', logform=login_form)
 
@@ -58,19 +59,18 @@ def logout():
 
     return render_template('login.html', logform=logout_form)
 
-@app.route('/groups/', methods=["GET", "POST"])
+@app.route('/groups/')
 def groups():
     meet = Meetings.query.filter_by(university=session.get('university'))
     subject=[]
     for i in meet:
         subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'))
 
-    gform = FormGroups()
     today = date.today()
 
-    return render_template('groups.html', meet=meet, gform=gform, subject=subject, today=today)
+    return render_template('groups.html', meet=meet, subject=subject, today=today)
 
-@app.route('/groups/<int:id>/')
+@app.route('/groups/<int:id>/', methods=["GET", "POST"])
 def join(id):
     group = Meetings.query.filter_by(id=id).first()
 

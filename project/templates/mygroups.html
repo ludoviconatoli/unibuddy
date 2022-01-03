@@ -15,7 +15,7 @@
                 <td><b>hour</b></td>
             </tr>
             {% for i in mymeets %}
-                {% if i.date > today %}
+                {% if i.date >= today %}
                     <tr>
                         <td>{{ i.id }}</td>
                         <td>{{ i.university }}</td>
@@ -32,7 +32,9 @@
                         <td>{{ i.hour }}</td>
                         <td><a href="{{ url_for('select', id=i.id) }}">Select</a></td>
                     </tr>
-
+                {% endif %}
+            {% endfor %}
+        </table>
     {% else %}
         <div class="w3-center">
             <h1>ERROR</h1>

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if session['logged'] %}
+        <div class="w3-row-padding w3-padding-64 w3-container w3-center">
+        <h1>CREATE A GROUP</h1>
+        <form action="/create" method="POST">
+            {{ cform.hidden_tag() }}<br>
+            <select name="subjects">
+            {% for i in subject %}
+                <option value="{{ i.subject }}">{{ i.subject }}</option>
+            {% endfor %}
+            </select><br>
+            {{ cform.email_tutor.label }}{{ cform.email_tutor() }}<br>
+            {{ cform.email_headgroup.label }}{{ cform.email_headgroup() }}<br>
+            {{ cform.max_members.label }}{{ cform.max_members() }}<br>
+            {{ cform.date.label }}{{ cform.date() }}<br>
+            {{ cform.hour.label }}{{ cform.hour() }}<br>
+            {{ cform.submit() }}
+        </form>
+        </div>
+    {% else %}
+        <div class="w3-center">
+            <h1>ERROR</h1>
+            <p>Before creating a study group you have to sign in</p>
+        </div>
+    {% endif %}
+{% endblock content %}

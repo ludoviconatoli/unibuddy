@@ -15,13 +15,14 @@
         <tr>
             <td>{{ group.id }}</td>
             <td>{{ group.university }}</td>
-            <td>{{ group.subject_id }}</td>
+            <td>{{ subject.subject }}</td>
             <td>{{ group.email_tutor }}</td>
             <td>{{ group.email_headgroup }}</td>
             <td>{{ group.max_members }}</td>
             <td>{{ group.num_participants }}</td>
             <td>{{ group.date }}</td>
             <td>{{ group.hour }}</td>
+            <td><a href="{{ url_for('abandon', id=group.id) }}">Abandon</a></td>
         </tr>
     </table>
     <form action="/join" method="post">

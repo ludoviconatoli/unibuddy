@@ -11,6 +11,7 @@ class Meetings(db.Model):
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     university = db.Column(db.String(50), db.ForeignKey('universities.name'))
+    study_course = db.Column(db.String(50))
     subject_id = db.Column(db.String(10), db.ForeignKey('subjects.subject_id'))
     email_tutor = db.Column(db.String(50), db.ForeignKey('tutor.email'))
     email_headgroup = db.Column(db.String(50), db.ForeignKey('student.email'))
@@ -22,8 +23,9 @@ class Meetings(db.Model):
 
     students = db.relationship("Student", backref="meetings", lazy=True, secondary=students)
 
-    def __init__(self, university, subject_id, email_tutor, email_headgroup, max_members, num_participants, date, hour):
+    def __init__(self, university, study_course, subject_id, email_tutor, email_headgroup, max_members, num_participants, date, hour):
         self.university = university
+        self.study_course = study_course
         self.subject_id = subject_id
         self.email_tutor = email_tutor
         self.email_headgroup = email_headgroup

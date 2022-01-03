@@ -39,9 +39,9 @@ db.session.commit()
 db.session.add(stud3)
 db.session.commit()
 
-meet1 = Meetings("Politecnico di Torino", "02PDWPH", "", "s302249@studenti.polito.it", 10, 1, datetime.date(2022, 01, 10), datetime.time(16, 30))
+meet1 = Meetings("Politecnico di Torino", "Management Engineering", "02PDWPH", "", "s302249@studenti.polito.it", 10, 1, datetime.date(2022, 01, 10), datetime.time(16, 30))
 meet1.students = [stud3]
-meet2 = Meetings("Politecnico di Torino", "05OIYPH", "", "s302572@studenti.polito.it", 5, 3, datetime.date(2022, 01, 12), datetime.time(14,30))
+meet2 = Meetings("Politecnico di Torino", "Management Engineering", "05OIYPH", "", "s302572@studenti.polito.it", 5, 3, datetime.date(2022, 01, 12), datetime.time(14,30))
 meet2.students=[stud1, stud2, stud3]
 
 db.session.add(meet1)

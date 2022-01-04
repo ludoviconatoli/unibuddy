@@ -1,4 +1,3 @@
-#crea l'indice di sotto file e fa i setup iniziali
 import os
 from pathlib import Path
 from flask import Flask

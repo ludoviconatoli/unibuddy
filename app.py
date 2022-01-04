@@ -1,7 +1,8 @@
-from datetime import date
+from datetime import date, datetime
 
 from flask import Flask, session, redirect, url_for, flash
 from flask import render_template
+from flask_bcrypt import Bcrypt
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, DateField, TimeField, \
     SelectField
@@ -16,7 +17,7 @@ from project.models.University import University
 from project.models.Post import Post
 from project import db
 
-#bcrypt = Bcrypt(app)
+bcrypt = Bcrypt(app)
 
 @app.route('/')
 def index():
@@ -31,17 +32,22 @@ class FormLogout(FlaskForm):
     submit = SubmitField("Logout")
 
 class FormJoin(FlaskForm):
-    chat = TextAreaField("chat")
-    submit = SubmitField("submit")
+    chat = TextAreaField("chat", validators=[DataRequired()])
+    submit = SubmitField("Post")
 
 class FormCreate(FlaskForm):
     subject = SelectField("subject", validators=[DataRequired()])
-    email_tutor = StringField("email_tutor", validators=[Email()])
-    email_headgroup = StringField("email_headgroup", validators=[DataRequired(), Email()])
+    email_tutor = StringField("email_tutor")
     max_members = IntegerField("max_members", validators=[DataRequired()])
     date = DateField("date", format='%Y-%m-%d', validators=[DataRequired()])
     hour = TimeField("hour", format='%H:%M', validators=[DataRequired()])
     submit = SubmitField("create")
+
+    def validate_date(self, date):
+        today=datetime.today
+        if date < today:
+            raise ValidationError('The date must be in the future')
+
 
 @app.route('/login/', methods=["GET", "POST"])
 def login():
@@ -49,7 +55,7 @@ def login():
     if login_form.validate_on_submit():
         user_email = Student.query.filter_by(email=login_form.username.data).first()
         user_tutor = Tutor.query.filter_by(email=login_form.username.data).first()
-        if user_email and user_email.password == login_form.password.data:
+        if user_email and bcrypt.check_password_hash(user_email.password, login_form.password.data):
             session['email'] = user_email.email
             session['student_id'] = user_email.student_id
             session['logged'] = True
@@ -127,19 +133,19 @@ def mygroups():
 def select(id):
     group = Meetings.query.filter_by(id=id).first()
     subject = Subjects.query.filter_by(
-        subject_id = group.subject_id, university=session.get('university'), study_course=session.get('study_course')).first()
+        subject_id=group.subject_id, university=session.get('university'), study_course=session.get('study_course')).first()
 
     user = Student.query.filter_by(email=session.get('email')).first()
     jform = FormJoin()
 
     if jform.validate_on_submit():
-        post = Post(user.email, jform.chat.data)
-        db.session.add(post)
+        p = Post(author=user.email, text=jform.chat.data)
+        db.session.add(p)
         db.session.commit()
-        group.posts.append(post)
+        group.posts.append(p)
         db.session.commit()
 
-    return render_template('select.html', group=group, jform=jform, subject=subject, posts=group.posts)
+    return render_template('select.html', group=group, jform=jform, subject=subject)
 
 @app.route('/abandon/<int:id>/')
 def abandon(id):
@@ -164,7 +170,34 @@ def create():
             subject += Subjects.query.filter_by(university=session.get('university'), subject_id=i.subject_id).first()
     else:
         subject = Subjects.query.filter_by(university=session.get('university'), study_course=session.get('study_course'))
-    #if cform.validate_on_submit():
+
+    if cform.validate_on_submit():
+        if cform.email_tutor.data:
+            if Tutor.query.filter_by(email=cform.email_tutor.data).first():
+                sub = Subjects.query.filter_by(subject=cform.subjects.data).first()
+                meet = Meetings(university=session.get('university'), study_course=session.get('study_course'),
+                                subject_id=sub.subject_id,
+                                email_tutor=cform.email_tutor.data, email_headgroup=session.get('email'),
+                                max_members=cform.max_members.data,
+                                num_participants=1, date=cform.date.data, hour=cform.hour.data
+                                )
+                db.session.add(meet)
+                db.session.commit()
+                return redirect(url_for('groups'))
+            else:
+                flash('The student inserted is not a tutor')
+                return redirect(url_for('create'))
+
+        sub = Subjects.query.filter_by(subject=cform.subjects.data).first()
+        meet = Meetings(university=session.get('university'), study_course=session.get('study_course'),
+                        subject_id=sub.subject_id,
+                        email_tutor="", email_headgroup=session.get('email'),
+                        max_members=cform.max_members.data,
+                        num_participants=1, date=cform.date.data, hour=cform.hour.data
+                        )
+        db.session.add(meet)
+        db.session.commit()
+        return redirect(url_for('groups'))
 
     return render_template('create.html', cform=cform, subject=subject)
 

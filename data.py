@@ -6,6 +6,7 @@ from project.models.Student import Student
 from project.models.Meetings import Meetings
 from project.models.Subjects import Subjects
 from project.models.University import University
+from project.models.Post import Post
 
 db.create_all()
 
@@ -41,8 +42,10 @@ db.session.commit()
 
 meet1 = Meetings("Politecnico di Torino", "Management Engineering", "02PDWPH", "", "s302249@studenti.polito.it", 10, 1, datetime.date(2022, 01, 10), datetime.time(16, 30))
 meet1.students = [stud3]
+meet1.posts=[]
 meet2 = Meetings("Politecnico di Torino", "Management Engineering", "05OIYPH", "", "s302572@studenti.polito.it", 5, 3, datetime.date(2022, 01, 12), datetime.time(14,30))
 meet2.students=[stud1, stud2, stud3]
+meet2.posts=[]
 
 db.session.add(meet1)
 db.session.commit()

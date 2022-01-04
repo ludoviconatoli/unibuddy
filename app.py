@@ -13,6 +13,7 @@ from project.models.Subjects import Subjects
 from project.models.Meetings import Meetings
 from project.models.Tutor import Tutor
 from project.models.University import University
+from project.models.Post import Post
 from project import db
 
 #bcrypt = Bcrypt(app)
@@ -89,6 +90,7 @@ def join(id):
     group = Meetings.query.filter_by(id=id).first()
 
     user = Student.query.filter_by(email=session.get('email')).first()
+
     for i in group.students:
         if i.email == session.get('email'):
             flash('You are already in this group')
@@ -102,12 +104,8 @@ def join(id):
     group = Meetings.query.filter_by(id=id).first()
     subject = Subjects.query.filter_by(subject_id=group.subject_id, university=session.get('university'),
                                        study_course=session.get('study_course')).first()
-    jform = FormJoin()
 
-    #if jform.validate_on_submit():
-        #return redirect(url_for())
-
-    return render_template('join.html', group=group, jform=jform, subject=subject)
+    return redirect(url_for('select', id=group.id))
 
 @app.route('/mygroups/')
 def mygroups():
@@ -131,9 +129,17 @@ def select(id):
     subject = Subjects.query.filter_by(
         subject_id = group.subject_id, university=session.get('university'), study_course=session.get('study_course')).first()
 
+    user = Student.query.filter_by(email=session.get('email')).first()
     jform = FormJoin()
 
-    return render_template('join.html', group=group, jform=jform, subject=subject)
+    if jform.validate_on_submit():
+        post = Post(user.email, jform.chat.data)
+        db.session.add(post)
+        db.session.commit()
+        group.posts.append(post)
+        db.session.commit()
+
+    return render_template('select.html', group=group, jform=jform, subject=subject, posts=group.posts)
 
 @app.route('/abandon/<int:id>/')
 def abandon(id):

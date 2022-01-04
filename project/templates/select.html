@@ -25,9 +25,14 @@
             <td><a href="{{ url_for('abandon', id=group.id) }}">Abandon</a></td>
         </tr>
     </table>
-    <form action="/join" method="post">
-        <div class="container w3-center">
-            {{ jform.chat() }}
+    <div class="w3-container">
+        {% for i in posts %}
+            <p>{{ i }}</p>
+        {% endfor %}
+    </div>
+    <form action="{{ url_for('select', id=group.id) }}" method="post">
+        <div class="w3-container w3-center">
+            {{ jform.chat() }}<br>
             {{ jform.submit() }}
         </div>
     </form>

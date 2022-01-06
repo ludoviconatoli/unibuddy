@@ -5,11 +5,6 @@ students = db.Table("meeting_students",
         db.Column("student_email", db.String(50), db.ForeignKey("student.email"), primary_key=True)
 )
 
-posts = db.Table("meeting_posts",
-    db.Column("meetings_id", db.Integer, db.ForeignKey("meetings.id"), primary_key=True),
-    db.Column("post_id", db.Integer, db.ForeignKey("post.id"), primary_key=True)
-)
-
 class Meetings(db.Model):
 
     __tablename__ = "meetings"
@@ -27,7 +22,7 @@ class Meetings(db.Model):
 
 
     students = db.relationship("Student", backref="meetings", lazy=True, secondary=students)
-    posts = db.relationship("Post", backref="meetings", lazy=True, secondary=posts)
+    posts = db.relationship("Post", backref="post.meetings_id")
 
     def __init__(self, university, study_course, subject_id, email_tutor, email_headgroup, max_members, num_participants, date, hour):
         self.university = university

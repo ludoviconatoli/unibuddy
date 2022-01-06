@@ -13,7 +13,7 @@ from project.models.Subjects import Subjects
 from project.models.Meetings import Meetings
 from project.models.Tutor import Tutor
 from project.models.University import University
-from project.models import Post
+from project.models.Post import Post
 from project import db
 
 @app.route('/')
@@ -141,12 +141,12 @@ def select(id):
     jform = FormJoin()
 
     if jform.validate_on_submit():
-        p = Post(author=user.email, text=jform.chat.data)
-        group.posts.append(p)
+        p = Post(author=user.email, meetings_id=group.id, text=jform.chat.data)
+        db.session.add(p)
         db.session.commit()
-        return render_template('select.html', group=group, jform=jform, subject=subject, posts=group.posts)
 
-    return render_template('select.html', group=group, jform=jform, subject=subject, posts=group.posts)
+    posts = Post.query.filter_by(meetings_id=group.id)
+    return render_template('select.html', group=group, jform=jform, subject=subject, posts=posts)
 
 @app.route('/abandon/<int:id>/')
 def abandon(id):

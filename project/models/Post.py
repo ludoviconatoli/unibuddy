@@ -13,4 +13,4 @@ class Post(db.Model):
         self.text = text
 
     def __repr__(self):
-        return ('\ntext: ' + self.text)
+        return ('\n ' + self.text)

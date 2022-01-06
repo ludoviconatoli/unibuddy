@@ -12,11 +12,7 @@
         {% endwith %}
         <form action="/create" method="POST">
             {{ cform.hidden_tag() }}<br>
-            <select name="subjects">
-            {% for i in subject %}
-                <option value="{{ i.subject }}">{{ i.subject }}</option>
-            {% endfor %}
-            </select><br>
+            {{ cform.subject.label }}{{ cform.subject() }}<br>
             {{ cform.email_tutor.label }}{{ cform.email_tutor() }}<br>
             {{ cform.max_members.label }}{{ cform.max_members() }}<br>
             {{ cform.date.label }}{{ cform.date() }}<br>

@@ -22,7 +22,7 @@ class Subjects(db.Model):
         self.teacher = teacher
 
     def __repr__(self):
-        return ('\n '+ self.subject)
+        return (self.subject)
 
     def getUniversity(self):
         if self.university:

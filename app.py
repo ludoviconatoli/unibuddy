@@ -16,6 +16,9 @@ from project.models.University import University
 from project.models.Post import Post
 from project import db
 
+from flask_mail import Message
+from project import mail
+
 @app.route('/')
 def index():
     return render_template("start.html")
@@ -41,10 +44,6 @@ class FormCreate(FlaskForm):
     hour = TimeField("hour", format='%H:%M', validators=[DataRequired()])
     submit = SubmitField("create")
 
-    #def __init__(self, subject_choices: list=None, *args, **kwargs):
-    #    super(FormCreate, self).__init__(*args, **kwargs)
-    #    if subject_choices:
-    #        self.subject.choices=subject_choices
     def validate_date(self, date):
         today=datetime.today()
         if date.data < today.date():
@@ -171,43 +170,59 @@ def create():
         for k in Subjects.query.filter_by(university=session.get('university'), study_course=session.get('study_course')):
            list_subjects.append(k)
     else:
-        list_subjects = Subjects.query.filter_by(university=session.get('university'),
-                                             study_course=session.get('study_course'))
+        for i in Subjects.query.filter_by(university=session.get('university'), study_course=session.get('study_course')):
+            list_subjects.append(i)
 
     cform = FormCreate()
     cform.subject.choices = list_subjects
-
     if cform.validate_on_submit():
         if cform.email_tutor.data:
             if Tutor.query.filter_by(email=cform.email_tutor.data).first():
-                sub = Subjects.query.filter_by(university=session.get('university'), study_course=session.get('study_course'),
+                sub = Subjects.query.filter_by(university=session.get('university'),
+                                               study_course=session.get('study_course'),
                                                subject=cform.subject.data).first()
                 meet = Meetings(university=session.get('university'), study_course=session.get('study_course'),
-                                subject_id=sub.subject_id,
-                                email_tutor=cform.email_tutor.data, email_headgroup=session.get('email'),
-                                max_members=cform.max_members.data,
-                                num_participants=1, date=cform.date.data, hour=cform.hour.data
-                                )
+                                subject_id=sub.subject_id, email_tutor=cform.email_tutor.data,
+                                email_headgroup=session.get('email'),
+                                max_members=cform.max_members.data, num_participants=1, date=cform.date.data,
+                                hour=cform.hour.data)
+
                 db.session.add(meet)
                 db.session.commit()
-                return redirect(url_for('groups'))
+
+                user = Student.query.filter_by(email=session.get('email')).first()
+                meet.students.append(user)
+                db.session.commit()
+                return redirect(url_for('mygroups'))
             else:
                 flash('The student inserted is not a tutor')
                 return redirect(url_for('create'))
         else:
-            sub = Subjects.query.filter_by(university=session.get('university'), study_course=session.get('study_course'),
-                                       subject=cform.subject.data).first()
+            sub = Subjects.query.filter_by(university=session.get('university'),
+                                           study_course=session.get('study_course'),
+                                           subject=cform.subject.data).first()
             meet = Meetings(university=session.get('university'), study_course=session.get('study_course'),
-                        subject_id=sub.subject_id,
-                        email_tutor="", email_headgroup=session.get('email'),
-                        max_members=cform.max_members.data,
-                        num_participants=1, date=cform.date.data, hour=cform.hour.data
-                        )
+                            subject_id=sub.getSubjectId(),
+                            email_tutor="", email_headgroup=session.get('email'),
+                            max_members=cform.max_members.data,
+                            num_participants=1, date=cform.date.data, hour=cform.hour.data)
+
             db.session.add(meet)
             db.session.commit()
-            return redirect(url_for('groups'))
+
+            user = Student.query.filter_by(email=session.get('email')).first()
+            meet.students.append(user)
+            db.session.commit()
+            return redirect(url_for('mygroups'))
 
     return render_template('create.html', cform=cform)
+
+#@app.route("/email/<string:email>")
+def send_email(email, id):
+    msg = Message('Unibuddy Account -- Request of tutor', sender='unibuddywebsite@gmail.com', recipients=[email])
+    msg.body('Hi we are the team of Unibuddy and we are inviting you to join the meeting with id: ' + id +
+             '\nPlease go to the website if you are available and join the group. \n\n Have a nice day \n\n Unibuddy')
+    mail.send(msg)
 
 if __name__ == '__main__':
     app.run(debug=True)

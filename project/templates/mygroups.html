@@ -19,9 +19,13 @@
                     <tr>
                         <td>{{ i.id }}</td>
                         <td>{{ i.university }}</td>
+                        {% set found = False %}
                         {% for k in subject %}
-                            {% if k.subject_id == i.subject_id %}
-                                <td>{{ k.subject }}</td>
+                            {% if found==False %}
+                                {% if i.subject_id == k.subject_id %}
+                                    <td>{{ k.subject }}</td>
+                                    {% set found=True %}
+                                {% endif %}
                             {% endif %}
                         {%  endfor %}
                         <td>{{ i.email_tutor }}</td>

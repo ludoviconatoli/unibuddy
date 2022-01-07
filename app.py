@@ -88,6 +88,13 @@ def groups():
     for i in meet:
         subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'), study_course=session.get('study_course'))
 
+    if session.get('tutor'):
+        subject_tutor = Tutor.query.filter_by(email=session.get('email'))
+        for i in subject_tutor:
+            for k in Meetings.query.filter_by(university=session.get('university'), study_course=session.get('study_course'), subject_id=i.subject_id):
+                meet.append(k)
+                subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'), study_course=session.get('study_course'))
+
     today = date.today()
 
     return render_template('groups.html', meet=meet, subject=subject, today=today)
@@ -126,6 +133,16 @@ def mygroups():
             if k.email == session.get('email'):
                 subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'))
                 mymeets.append(i)
+
+    if session.get('tutor'):
+        subject_tutor = Tutor.query.filter_by(email=session.get('email'))
+        for i in subject_tutor:
+            for k in Meetings.query.filter_by(university=session.get('university'),
+                                              study_course=session.get('study_course'), subject_id=i.subject_id):
+                if k.email_tutor == session.get('email'):
+                    mymeets.append(k)
+                    subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'),
+                                                    study_course=session.get('study_course'))
 
     today = date.today()
     return render_template('mygroups.html', mymeets=mymeets, subject=subject, today=today)
@@ -178,22 +195,42 @@ def create():
     if cform.validate_on_submit():
         if cform.email_tutor.data:
             if Tutor.query.filter_by(email=cform.email_tutor.data).first():
-                sub = Subjects.query.filter_by(university=session.get('university'),
-                                               study_course=session.get('study_course'),
-                                               subject=cform.subject.data).first()
-                meet = Meetings(university=session.get('university'), study_course=session.get('study_course'),
-                                subject_id=sub.subject_id, email_tutor=cform.email_tutor.data,
-                                email_headgroup=session.get('email'),
-                                max_members=cform.max_members.data, num_participants=1, date=cform.date.data,
-                                hour=cform.hour.data)
+                if session.get('tutor') and session.get('tutor') == cform.email_tutor.data:
+                    sub = Subjects.query.filter_by(university=session.get('university'),
+                                                   study_course=session.get('study_course'),
+                                                   subject=cform.subject.data).first()
+                    meet = Meetings(university=session.get('university'), study_course=session.get('study_course'),
+                                    subject_id=sub.subject_id, email_tutor=cform.email_tutor.data,
+                                    email_headgroup=session.get('email'),
+                                    max_members=cform.max_members.data, num_participants=1, date=cform.date.data,
+                                    hour=cform.hour.data)
 
-                db.session.add(meet)
-                db.session.commit()
+                    db.session.add(meet)
+                    db.session.commit()
 
-                user = Student.query.filter_by(email=session.get('email')).first()
-                meet.students.append(user)
-                db.session.commit()
-                return redirect(url_for('mygroups'))
+                    user = Student.query.filter_by(email=session.get('email')).first()
+                    meet.students.append(user)
+                    db.session.commit()
+                    return redirect(url_for('mygroups'))
+                else:
+                    sub = Subjects.query.filter_by(university=session.get('university'),
+                                                   study_course=session.get('study_course'),
+                                                   subject=cform.subject.data).first()
+                    meet = Meetings(university=session.get('university'), study_course=session.get('study_course'),
+                                    subject_id=sub.subject_id, email_tutor=cform.email_tutor.data,
+                                    email_headgroup=session.get('email'),
+                                    max_members=cform.max_members.data, num_participants=1, date=cform.date.data,
+                                    hour=cform.hour.data)
+
+                    db.session.add(meet)
+                    db.session.commit()
+
+                    user = Student.query.filter_by(email=session.get('email')).first()
+                    meet.students.append(user)
+                    db.session.commit()
+                    send_email(cform.email_tutor.data, meet.id)
+
+                    return redirect(url_for('mygroups'))
             else:
                 flash('The student inserted is not a tutor')
                 return redirect(url_for('create'))

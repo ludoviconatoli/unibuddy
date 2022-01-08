@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if session['logged'] %}
+        <div class="w3-container w3-center">
+            <h3>Rating the tutor</h3>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <b>{{ message }}</b>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form action="/rate/tutor" method="POST">
+                {{ rtform.hidden_tag() }}<br>
+                {% for subfield in rtform.rating %}
+                    {{ subfield }}{{ subfield.label }}
+                {% endfor %}
+                <br>
+                {{ rtform.email_tutor.label }}{{ rtform.email_tutor() }}<br>
+                {{ rtform.submit() }}
+                {{ rtform.errors }}
+            </form>
+        </div>
+    {% else %}
+        <div class="w3-center">
+            <h1>ERROR</h1>
+            <p>Before rating you have to sign in</p>
+        </div>
+    {% endif %}
+{% endblock content %}

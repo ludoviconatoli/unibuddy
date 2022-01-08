@@ -10,7 +10,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <form action="{{ url_for('create') }}" method="POST">
+            <form action="/create" method="POST">
                 {{ cform.hidden_tag() }}<br>
                 {{ cform.subject.label }}{{ cform.subject() }}<br>
                 {{ cform.email_tutor.label }}{{ cform.email_tutor() }}<br>

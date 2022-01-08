@@ -5,7 +5,7 @@ subjects = db.Table("student_subjects",
     db.Column("subject_id", db.String(10), db.ForeignKey("subjects.subject_id"), primary_key=True)
 )
 
-class Student(db.Model): #sottoclasse di un modello
+class Student(db.Model):
 
     __tablename__ = "student"
 

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if session['logged'] %}
+        <div class="w3-container w3-center">
+            <h3>Rating the system</h3>
+            <form action="/rate" method="POST">
+                {{ rform.hidden_tag() }} <br>
+                {% for subfield in rform.rating %}
+                    {{ subfield }}{{ subfield.label }}
+                {% endfor %}
+                <br>
+                {{ rform.submit() }}
+                {{ rform.errors }}
+            </form>
+        </div>
+    {% else %}
+        <div class="w3-center">
+            <h1>ERROR</h1>
+            <p>Before rating you have to sign in</p>
+        </div>
+    {% endif %}
+{% endblock content %}

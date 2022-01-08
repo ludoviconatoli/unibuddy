@@ -4,7 +4,7 @@ from flask import Flask, session, redirect, url_for, flash
 from flask import render_template
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, DateField, TimeField, \
-    SelectField
+    SelectField, RadioField
 from wtforms.validators import DataRequired, Length, Email, ValidationError
 
 from project import app
@@ -14,6 +14,7 @@ from project.models.Meetings import Meetings
 from project.models.Tutor import Tutor
 from project.models.University import University
 from project.models.Post import Post
+from project.models.Ratings import Ratings
 from project import db
 
 from flask_mail import Message
@@ -49,6 +50,15 @@ class FormCreate(FlaskForm):
         if date.data < today.date():
             raise ValidationError('The date must be in the future')
 
+class FormRate(FlaskForm):
+    rating = RadioField('rating', choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], validators=[DataRequired()])
+    submit = SubmitField("Rate")
+
+class FormRateTutor(FlaskForm):
+    rating = RadioField('rating tutor', choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], validators=[DataRequired()])
+    email_tutor = StringField("email_tutor", validators=[DataRequired(), Email()])
+    submit = SubmitField("Rate")
+
 
 @app.route('/login/', methods=["GET", "POST"])
 def login():
@@ -65,7 +75,7 @@ def login():
             session['study_course'] = user_email.study_course
             session['university'] = user_email.university
             if user_tutor:
-                session['tutor'] = user_tutor
+                session['tutor'] = user_tutor.email
             return redirect(url_for('index'))
         else:
             flash('Login error')
@@ -89,8 +99,8 @@ def groups():
         subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'), study_course=session.get('study_course'))
 
     if session.get('tutor'):
-        subject_tutor = Tutor.query.filter_by(email=session.get('email'))
-        for i in subject_tutor:
+        tutor = Tutor.query.filter_by(email=session.get('email')).first()
+        for i in tutor.subjects:
             for k in Meetings.query.filter_by(university=session.get('university'), study_course=session.get('study_course'), subject_id=i.subject_id):
                 meet.append(k)
                 subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'), study_course=session.get('study_course'))
@@ -135,8 +145,8 @@ def mygroups():
                 mymeets.append(i)
 
     if session.get('tutor'):
-        subject_tutor = Tutor.query.filter_by(email=session.get('email'))
-        for i in subject_tutor:
+        tutor = Tutor.query.filter_by(email=session.get('email')).first()
+        for i in tutor.subjects:
             for k in Meetings.query.filter_by(university=session.get('university'),
                                               study_course=session.get('study_course'), subject_id=i.subject_id):
                 if k.email_tutor == session.get('email'):
@@ -180,8 +190,8 @@ def abandon(id):
 def create():
     list_subjects=[]
     if session.get('tutor'):
-        subject_tutor = Tutor.query.filter_by(email=session.get('email'))
-        for i in subject_tutor:
+        tutor = Tutor.query.filter_by(email=session.get('email')).first()
+        for i in tutor.subjects:
             list_subjects.append(Subjects.query.filter_by(university=session.get('university'), subject_id=i.subject_id).first())
 
         for k in Subjects.query.filter_by(university=session.get('university'), study_course=session.get('study_course')):
@@ -195,7 +205,7 @@ def create():
     if cform.validate_on_submit():
         if cform.email_tutor.data:
             if Tutor.query.filter_by(email=cform.email_tutor.data).first():
-                if session.get('tutor') and session.get('tutor') == cform.email_tutor.data:
+                if session.get('tutor') and session.get('email') == cform.email_tutor.data:
                     sub = Subjects.query.filter_by(university=session.get('university'),
                                                    study_course=session.get('study_course'),
                                                    subject=cform.subject.data).first()
@@ -254,7 +264,39 @@ def create():
 
     return render_template('create.html', cform=cform)
 
-#@app.route("/email/<string:email>")
+@app.route('/rate/', methods=["GET", "POST"])
+def rate():
+    rform = FormRate()
+
+    if rform.validate_on_submit():
+        rate = Ratings(rform.rating.data, "")
+        db.session.add(rate)
+        db.session.commit()
+        return redirect(url_for('index'))
+
+    return render_template('rate.html', rform=rform)
+
+@app.route('/rate/tutor/', methods=["GET", "POST"])
+def rate_tutor():
+    rtform = FormRateTutor()
+
+    if rtform.validate_on_submit():
+        if Tutor.query.filter_by(email=rtform.email_tutor.data).first():
+            if session.get('tutor') and session.get('email') == rtform.email_tutor.data:
+                flash('You cannot rate yourself')
+                return redirect(url_for('rate'))
+
+            rate = Ratings(rtform.rating.data, rtform.email_tutor.data)
+            db.session.add(rate)
+            db.session.commit()
+            return redirect(url_for('index'))
+        else:
+            flash('The email inserted is not referred to a tutor')
+            return redirect(url_for('rate'))
+
+    return render_template('rate.html', rtform=rtform)
+
+
 def send_email(email, id):
     msg = Message('Unibuddy Account -- Request of tutor', sender='unibuddywebsite@gmail.com', recipients=[email])
     msg.body('Hi we are the team of Unibuddy and we are inviting you to join the meeting with id: ' + id +

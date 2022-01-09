@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if session['logged'] %}
+        <div class="w3-container w3-center">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                 {% for message in messages %}
+                    <b>{{ message }}</b>
+                 {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form action="{{ url_for('add', id=group.id) }}" method="post">
+            {{ aform.hidden_tag() }}<br>
+            {{ aform.email.label }}{{ aform.email() }}<br>
+            {{ aform.submit() }}
+        </form>
+        </div>
+    {% else %}
+        <div class="w3-center">
+            <h1>ERROR</h1>
+            <p>Before seeing this page you have to sign in</p>
+        </div>
+    {% endif %}
+{% endblock content %}

@@ -59,6 +59,13 @@ class FormRateTutor(FlaskForm):
     email_tutor = StringField("email_tutor", validators=[DataRequired(), Email()])
     submit = SubmitField("Rate")
 
+class FormAdd(FlaskForm):
+    email = StringField('email', validators=[DataRequired(), Email()])
+    submit = SubmitField('add')
+
+class FormTutors(FlaskForm):
+    subject = SelectField('subject', choices=[], validators=[DataRequired()])
+    submit = SubmitField('submit')
 
 @app.route('/login/', methods=["GET", "POST"])
 def login():
@@ -120,14 +127,29 @@ def join(id):
             flash('You are already in this group')
             return redirect(url_for('groups'))
 
+    if session.get('tutor'):
+        tutor = Tutor.query.filter_by(email=session.get('tutor')).first()
+        if tutor:
+            for i in tutor.subjects:
+                if group.subject_id == i.subject_id:
+                    if group.email_tutor != "":
+                        flash('The group already has a tutor')
+                        return redirect(url_for('groups'))
+                    else:
+                        group.email_tutor = session.get('tutor')
+                        db.session.commit()
+                        group.students.append(user)
+                        db.session.commit()
+                        group.num_participants += 1
+                        db.session.commit()
+                        return redirect(url_for('select', id=group.id))
+
     group.students.append(user)
     db.session.commit()
     group.num_participants += 1
     db.session.commit()
 
     group = Meetings.query.filter_by(id=id).first()
-    subject = Subjects.query.filter_by(subject_id=group.subject_id, university=session.get('university'),
-                                       study_course=session.get('study_course')).first()
 
     return redirect(url_for('select', id=group.id))
 
@@ -187,7 +209,7 @@ def abandon(id):
     return redirect(url_for('mygroups'))
 
 @app.route('/create/', methods=["GET", "POST"])
-def create():
+def create(**kwargs):
     list_subjects=[]
     if session.get('tutor'):
         tutor = Tutor.query.filter_by(email=session.get('email')).first()
@@ -238,7 +260,7 @@ def create():
                     user = Student.query.filter_by(email=session.get('email')).first()
                     meet.students.append(user)
                     db.session.commit()
-                    send_email(cform.email_tutor.data, meet.id)
+                    send_email(cform.email_tutor.data, meet.id, **kwargs)
 
                     return redirect(url_for('mygroups'))
             else:
@@ -264,12 +286,64 @@ def create():
 
     return render_template('create.html', cform=cform)
 
+@app.route('/add/<int:id>/', methods=["GET", "POST"])
+def add(id, **kwargs):
+    group = Meetings.query.filter_by(id=id).first()
+    aform = FormAdd()
+
+    if aform.validate_on_submit():
+        if group.email_tutor != "":
+            flash('The group already has a tutor')
+            return redirect(url_for('add', id=id))
+        tutor = Tutor.query.filter_by(email=aform.email.data).first()
+        if tutor:
+            for i in tutor.subjects:
+                if i.subject_id == group.subject_id:
+                    send_email(aform.email.data, group.id, **kwargs)
+                    return redirect(url_for('mygroups'))
+
+            flash('The email inserted is referred to a person that is not a tutor in the subject of the group')
+            return redirect(url_for('add', id=id))
+        else:
+            flash('The email inserted is referred to a person that is not a tutor')
+            return redirect(url_for('add', id=id))
+    return render_template('add_tutor.html', aform=aform, group=group)
+
+@app.route('/tutors', methods=["GET", "POST"])
+def tutors():
+    tform = FormTutors()
+    list_subjects = []
+    for i in Subjects.query.filter_by(university=session.get('university'), study_course=session.get('study_course')):
+        list_subjects.append(i)
+
+    tform.subject.choices = list_subjects
+    list_tutors = []
+    if tform.validate_on_submit():
+        subject = Subjects.query.filter_by(subject=tform.subject.data, university=session.get('university'),
+                                           study_course=session.get('study_course')).first()
+        tutors = Tutor.query.filter_by(university=session.get('university'))
+        list_tutors = []
+        for i in tutors:
+            for k in i.subjects:
+                if k.subject_id == subject.subject_id:
+                    if i.average_rating != None:
+                        list_tutors.append(i)
+        list_tutors.sort(key=lambda x: x.average_rating, reverse=True)
+
+        for i in tutors:
+            for k in i.subjects:
+                if k.subject_id == subject.subject_id:
+                    if i.average_rating == None:
+                        list_tutors.append(i)
+
+    return render_template('tutors.html', tform=tform, list_tutors=list_tutors)
+
 @app.route('/rate/', methods=["GET", "POST"])
 def rate():
     rform = FormRate()
 
     if rform.validate_on_submit():
-        rate = Ratings(rform.rating.data, "")
+        rate = Ratings(rating=rform.rating.data, email_tutor="")
         db.session.add(rate)
         db.session.commit()
         return redirect(url_for('index'))
@@ -286,21 +360,32 @@ def rate_tutor():
                 flash('You cannot rate yourself')
                 return redirect(url_for('rate'))
 
-            rate = Ratings(rtform.rating.data, rtform.email_tutor.data)
+            rate = Ratings(rating=rtform.rating.data, email_tutor=rtform.email_tutor.data)
             db.session.add(rate)
+            db.session.commit()
+
+            ratings = Ratings.query.filter_by(email_tutor=rtform.email_tutor.data)
+            sum=0
+            k=0
+            for i in ratings:
+                sum += i.rating
+                k += 1
+
+            tutor = Tutor.query.filter_by(email=rtform.email_tutor.data).first()
+            tutor.average_rating = sum/k
             db.session.commit()
             return redirect(url_for('index'))
         else:
             flash('The email inserted is not referred to a tutor')
             return redirect(url_for('rate'))
 
-    return render_template('rate.html', rtform=rtform)
+    return render_template('rate_tutor.html', rtform=rtform)
 
 
-def send_email(email, id):
-    msg = Message('Unibuddy Account -- Request of tutor', sender='unibuddywebsite@gmail.com', recipients=[email])
-    msg.body('Hi we are the team of Unibuddy and we are inviting you to join the meeting with id: ' + id +
-             '\nPlease go to the website if you are available and join the group. \n\n Have a nice day \n\n Unibuddy')
+def send_email(email, id, **kwargs):
+    s = str(id)
+    msg = Message('Unibuddy Account -- Request of tutor', recipients=[email], sender='unibuddywebsite@gmail.com')
+    msg.body = render_template('email.txt', s=s, **kwargs)
     mail.send(msg)
 
 if __name__ == '__main__':

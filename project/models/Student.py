@@ -19,7 +19,7 @@ class Student(db.Model):
 
     subjects = db.relationship("Subjects", backref="student", lazy=True, secondary=subjects)
     headgroups = db.relationship("Meetings", backref="meetings.email_headgroup")
-    posts=db.relationship("Post", backref="post.author")
+    posts = db.relationship("Post", backref="post.author")
 
     def __init__(self, email, password, student_id, name, surname, study_course, university):
         self.email = email

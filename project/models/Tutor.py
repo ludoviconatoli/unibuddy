@@ -14,6 +14,7 @@ class Tutor(db.Model):
     name = db.Column(db.String(30))
     surname = db.Column(db.String(30))
     university = db.Column(db.String(50), db.ForeignKey("universities.name"))
+    average_rating = db.Column(db.Float())
 
     meetings = db.relationship('Meetings', backref='meetings.email_tutor')
     subjects = db.relationship('Subjects', backref='tutor', lazy=True, secondary=subjects)

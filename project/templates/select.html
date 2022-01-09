@@ -23,6 +23,9 @@
             <td>{{ group.date }}</td>
             <td>{{ group.hour }}</td>
             <td><a href="{{ url_for('abandon', id=group.id) }}">Abandon</a></td>
+            {% if session['email'] == group.email_headgroup %}
+                <td><a href="{{ url_for('add', id=group.id) }}">Add Tutor</a></td>
+            {% endif %}
         </tr>
     </table>
     <div class="w3-container w3-center">

@@ -1,4 +1,4 @@
-import os
+import os, getenv
 from pathlib import Path
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -18,11 +18,10 @@ app.config["SQLALCHEMY_TRSCK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-app.config['MAIL_SERVER']='smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
 app.config['MAIL_USERNAME'] = 'unibuddywebsite@gmail.com'
 app.config['MAIL_PASSWORD'] = 'Studygroup1!'
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = True
 
-mail=Mail()
+mail = Mail(app)

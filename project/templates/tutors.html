@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if session['logged'] %}
+        <div class="w3-container w3-center">
+            <form action="/tutors" method="post">
+                {{ tform.hidden_tag() }}<br>
+                {{ tform.subject.label }}{{ tform.subject() }}<br>
+                {{ tform.submit() }}
+            </form>
+        </div>
+        {% if list_tutors %}
+            <table align="center" cellspacing="5">
+                <tr><th colspan="6">TUTORS</th></tr>
+                <tr>
+                    <td><b>Email</b></td>
+                    <td><b>Tutor_id</b></td>
+                    <td><b>Name</b></td>
+                    <td><b>Surname</b></td>
+                    <td><b>University</b></td>
+                    <td><b>Rating</b></td>
+                </tr>
+                {% for i in list_tutors %}
+                    <tr>
+                        <td>{{ i.email }}</td>
+                        <td>{{ i.tutor_id }}</td>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.surname }}</td>
+                        <td>{{ i.university }}</td>
+                        <td>{{ i.average_rating }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    {% else %}
+        <div class="w3-center">
+            <h1>ERROR</h1>
+            <p>Before seeing the tutors you have to sign in</p>
+        </div>
+    {% endif %}
+{% endblock content %}

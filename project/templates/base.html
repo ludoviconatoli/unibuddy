@@ -58,8 +58,10 @@
           <a href="/login" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Login</a>
       {% endif %}
   </div>
-    </div>
+  </div>
+
   <header class="w3-container w3-blue w3-center" style="padding:128px 10px">
+      <img src="{{ url_for('static', filename='static/logo/logo_website_unibuddy.jpg') }}" width="300" height="200" alt="Website Logo">
       <h1 class="w3-margin w3-jumbo">UNIBUDDY</h1>
       {% if session['logged'] %}
         <h3>{{ session.get('email') }}</h3>

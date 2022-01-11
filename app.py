@@ -22,7 +22,18 @@ from project import mail
 
 @app.route('/')
 def index():
-    return render_template("start.html")
+    num_groups = 0
+    for i in Meetings.query.all():
+        num_groups += 1
+
+    sum=0
+    num=0
+    for i in Ratings.query.filter_by(email_tutor=""):
+        sum += i.rating
+        num += 1
+
+    average = sum/num
+    return render_template("start.html", num_groups=num_groups, average=average)
 
 class FormLogin(FlaskForm):
     username = StringField("email", validators=[DataRequired(), Email()])

@@ -19,8 +19,9 @@ db.session.commit()
 subject_eco = Subjects("05OIYPH", "Politecnico di Torino", "Management Engineering", "Economics", "Anna D'Ambrosio")
 subject_is = Subjects("02PDWPH", "Politecnico di Torino", "Management Engineering", "Information Systems", "Claudio Giovanni Demartini")
 subject_a = Subjects("16ACFPL", "Politecnico di Torino", "Ingegneria Gestionale", "Analisi I", "Silvio Mercadante")
+subject_acf = Subjects("01PEBPH", "Politecnico di Torino", "Management Engineering", "Accounting and Corporate Finance", "Elisa Ughetto")
 
-uni1.subjects = [subject_eco, subject_is, subject_a]
+uni1.subjects = [subject_eco, subject_is, subject_a, subject_acf]
 
 db.session.add(subject_eco)
 db.session.commit()
@@ -28,16 +29,23 @@ db.session.add(subject_is)
 db.session.commit()
 db.session.add(subject_a)
 db.session.commit()
+db.session.add(subject_acf)
+db.session.commit()
+
 
 stud1 = Student("s302572@studenti.polito.it", "Pippo9!", "s302572", "Ludovico", "Natoli", "Management Engineering", "Politecnico di Torino")
 stud2 = Student("s295977@studenti.polito.it", "Pluto9!", "s295977", "Michele", "Chiantera", "Management Engineering", "Politecnico di Torino")
 stud3 = Student("s302249@studenti.polito.it", "Rossi9!", "s302249", "Davide", "Decurti", "Management Engineering", "Politecnico di Torino")
 stud4 = Student("s402202@studenti.polito.it", "Verdi9!", "s402202", "Sofia", "Santi", "Ingegneria Gestionale", "Politecnico di Torino")
+stud5 = Student("s303065@studenti.polito.it", "Neri9!", "s303065", "Mattia", "Di Florio", "Management Engineering", "Politecnico di Torino")
+stud6 = Student("s302901@studenti.polito.it", "Viola9!", "s302901", "Silvia", "D'Ambra", "Management Engineering", "Politecnico di Torino")
 
-stud1.subjects = [subject_eco, subject_is]
-stud2.subjects = [subject_eco]
-stud3.subjects = [subject_is]
+stud1.subjects = [subject_eco, subject_is, subject_acf]
+stud2.subjects = [subject_eco, subject_is, subject_acf]
+stud3.subjects = [subject_eco, subject_is, subject_acf]
 stud4.subjects = [subject_a]
+stud5.subjects = [subject_eco, subject_is, subject_acf]
+stud6.subjects = [subject_eco, subject_is, subject_acf]
 
 db.session.add(stud1)
 db.session.commit()
@@ -46,6 +54,10 @@ db.session.commit()
 db.session.add(stud3)
 db.session.commit()
 db.session.add(stud4)
+db.session.commit()
+db.session.add(stud5)
+db.session.commit()
+db.session.add(stud6)
 db.session.commit()
 
 meet1 = Meetings("Politecnico di Torino", "Management Engineering", "02PDWPH", "", "s302249@studenti.polito.it", 10, 1, datetime.date(2022, 1, 10), datetime.time(16, 30))
@@ -71,6 +83,11 @@ tutor2.subjects = [subject_a]
 db.session.add(tutor1)
 db.session.commit()
 db.session.add(tutor2)
+db.session.commit()
+
+rate1 = Ratings(4, "")
+
+db.session.add(rate1)
 db.session.commit()
 
 courses = Post.query.all()

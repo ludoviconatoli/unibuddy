@@ -61,7 +61,7 @@
   </div>
 
   <header class="w3-container w3-blue w3-center" style="padding:128px 10px">
-      <img src="{{ url_for('static', filename='static/logo/logo_website_unibuddy.jpg') }}" width="300" height="200" alt="Website Logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Website Logo"/>
       <h1 class="w3-margin w3-jumbo">UNIBUDDY</h1>
       {% if session['logged'] %}
         <h3>{{ session.get('email') }}</h3>
@@ -69,5 +69,17 @@
   </header>
     {% block content %}
     {% endblock content %}
+
+<footer class="w3-container w3-grey w3-padding-64">
+    <p>For any problem, <br>
+       Do not hesitate to contact us: <br>
+       unibuddywebsite@gmail.com
+    </p>
+    <i class="fa fa-facebook-square w3-text-indigo" style="font-size:36px"></i>
+    <i class="fa fa-instagram w3-text-pink" style="font-size:36px"></i>
+    <i class="fa fa-twitter w3-text-blue" style="font-size:36px"></i>
+    <i class="fa fa-linkedin-square w3-text-indigo" style="font-size:36px"></i>
+
+</footer>
 </body>
 </html>

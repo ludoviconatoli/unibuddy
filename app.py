@@ -3,6 +3,7 @@ from datetime import date, datetime
 from flask import Flask, session, redirect, url_for, flash
 from flask import render_template
 from flask_wtf import FlaskForm
+from sqlalchemy import Integer
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, DateField, TimeField, \
     SelectField, RadioField
 from wtforms.validators import DataRequired, Length, Email, ValidationError
@@ -36,8 +37,8 @@ def index():
     return render_template("start.html", num_groups=num_groups, average=average)
 
 class FormLogin(FlaskForm):
-    username = StringField("email", validators=[DataRequired(), Email()])
-    password = PasswordField("password", validators=[DataRequired()])
+    username = StringField("Email", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Sign in")
 
 class FormLogout(FlaskForm):
@@ -60,6 +61,10 @@ class FormCreate(FlaskForm):
         today=datetime.today()
         if date.data < today.date():
             raise ValidationError('The date must be in the future')
+
+    def validate_max_members(self, max_members):
+        if max_members.data <= 1:
+            raise ValidationError('The number of students must be higher than 1')
 
 class FormRate(FlaskForm):
     rating = RadioField('rating', choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], validators=[DataRequired()])
@@ -219,6 +224,13 @@ def abandon(id):
 
     return redirect(url_for('mygroups'))
 
+@app.route('/delete/<int:id>')
+def delete(id):
+    group = Meetings.query.filter_by(id=id).first()
+    db.session.delete(group)
+    db.session.commit()
+
+    return redirect(url_for('mygroups'))
 @app.route('/create/', methods=["GET", "POST"])
 def create(**kwargs):
     list_subjects=[]
@@ -236,6 +248,13 @@ def create(**kwargs):
     cform = FormCreate()
     cform.subject.choices = list_subjects
     if cform.validate_on_submit():
+        #controllare se l'headgroup è in altri meetings alla stessa ora
+        for i in Meetings.query.filter_by(university=session.get('university'), study_course=session.get('study_course')):
+            for k in i.students:
+                if(k.email == session.get('email') and i.date == cform.date.data and i.hour == cform.hour.data):
+                    flash('You cannot create a group at the same moment in which you join another group')
+                    return redirect(url_for('create'))
+
         if cform.email_tutor.data:
             if Tutor.query.filter_by(email=cform.email_tutor.data).first():
                 if session.get('tutor') and session.get('email') == cform.email_tutor.data:

@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if session['logged'] %}
-        <div class="w3-row-padding w3-padding-64 w3-container w3-center">
+        <div class="w3-row-padding w3-padding-64 w3-container w3-center"
+             style="background: url('https://r.search.yahoo.com/_ylt=AwrJ5sw7w95hrUEAiZ4dDQx.;_ylu=c2VjA3NyBHNsawNpbWcEb2lkA2YzOGNkMmM0NTE2OWM4MjhjMjlhZWM4OTViZTM2MGJkBGdwb3MDMTIEaXQDYmluZw--/RV=2/RE=1642017723/RO=11/RU=https%3a%2f%2fwww.freepngimg.com%2fpng%2f34071-students-learning/RK=2/RS=C70GHYnv4y04GeRdqsNKeVMEzkE')">
         <h1>LOGOUT</h1>
-        <form action="/logout" method="POST">
+        <form action="{{ url_for('logout') }}" method="POST">
             {{ logform.hidden_tag() }}<br>
-            {{ logform.submit() }}
+            <div>
+                {{ logform.submit(class="w3-button w3-blue w3-border w3-border-black w3-round-large") }}
+            </div>
         </form>
         </div>
     {% else %}
@@ -18,12 +21,20 @@
                  {% endfor %}
             {% endif %}
         {% endwith %}
-
-        <form action="/login" method="POST">
-            {{ logform.hidden_tag() }}<br>
-            {{ logform.username.label }}{{ logform.username() }}<br>
-            {{ logform.password.label }}{{ logform.password() }}<br>
-            {{ logform.submit() }}
+        <br>
+        <form action="{{ url_for('login') }}" method="POST">
+            <div class="w3-container">
+                {{ logform.hidden_tag() }}
+                {{ logform.username.label }}
+                <br>
+                {{ logform.username() }}
+            </div><br>
+            <div class="w3-container">
+                {{ logform.password.label() }}
+                <br>
+                {{ logform.password() }}
+            </div><br>
+            {{ logform.submit(class="w3-button w3-blue w3-border w3-border-black w3-round-large") }}
         </form>
         </div>
     {% endif %}

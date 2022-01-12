@@ -22,10 +22,13 @@
             <td>{{ group.num_participants }}</td>
             <td>{{ group.date }}</td>
             <td>{{ group.hour }}</td>
-            <td><a href="{{ url_for('abandon', id=group.id) }}">Abandon</a></td>
             {% if session['email'] == group.email_headgroup %}
-                <td><a href="{{ url_for('add', id=group.id) }}">Add Tutor</a></td>
+                <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{url_for('delete', id=group.id) }}">Delete group</a></td>
+                <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('add', id=group.id) }}">Add Tutor</a></td>
+            {% else %}
+                <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('abandon', id=group.id) }}">Abandon</a></td>
             {% endif %}
+
         </tr>
     </table>
     <div class="w3-container w3-center">

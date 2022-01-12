@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if session['logged'] %}
+        <h1 class="w3-center">MY GROUPS</h1>
         <table align="center" cellspacing="5">
-            <tr ><th colspan="10">GROUPS</th></tr>
             <tr>
                 <td><b>id group</b></td>
                 <td><b>university</b></td>
@@ -26,7 +26,7 @@
                         <td>{{ i.num_participants }}</td>
                         <td>{{ i.date }}</td>
                         <td>{{ i.hour }}</td>
-                        <td><a href="{{ url_for('select', id=i.id) }}">Select</a></td>
+                        <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('select', id=i.id) }}">Select</a></td>
                     </tr>
                 {% endif %}
             {% endfor %}

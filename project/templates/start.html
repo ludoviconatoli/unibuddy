@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="style.css">
     <style>
         body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
         .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
         .fa-anchor,.fa-coffee {font-size:200px}
+        .back {background: url("https://tse3.mm.bing.net/th?id=OIP.ZfMS_tvxOv30i1wlDTW3iwHaE8&pid=Api&P=0&w=296&h=198");
+            background-repeat: no-repeat; background-position: center center; background-size: 100%;}
     </style>
 </head>
 <body>
@@ -23,7 +24,7 @@
       <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-blue" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
       <a href="{{ url_for('index') }}" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
       {% if session['logged'] %}
-          <a href="{{ url_for('logout') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Logout</a>
+          <a href="{{ url_for('logout') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right">Logout</a>
           <a href="{{ url_for('groups') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Groups</a>
           <a href="{{ url_for('mygroups') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">My groups</a>
           <a href="{{ url_for('create') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Create a group</a>
@@ -62,11 +63,12 @@
 </div>
 
 <!-- Header -->
-<header class="w3-container w3-blue w3-center" style="padding:128px 16px">
+<header class="w3-display-container w3-blue w3-center " style="padding:128px 16px; ">
     <img class="w3-round-xlarge" src="{{ url_for('static', filename='images/logo.png') }}" width="450" height="250" alt="Website Logo"/>
-    <!--<h1 class="w3-margin w3-jumbo">UNIBUDDY</h1>-->
     {% if session['logged'] %}
-        <h3>{{ session.get('email') }}</h3>
+        <div class="w3-display-bottomcenter w3-margin">
+            <h3>{{ session['name'] }} {{ session['surname'] }}</h3>
+        </div>
     {% else %}
         <div class="w3-container">
             <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">
@@ -100,7 +102,7 @@
 <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
   <div class="w3-content">
     <div class="w3-third w3-center">
-      <i class="fa fa-coffee w3-padding-64 w3-text-blue w3-margin-right"></i>
+        <i class="fa fa-coffee w3-padding-64 w3-text-blue w3-margin-right"></i>
     </div>
 
     <div class="w3-twothird">
@@ -113,17 +115,17 @@
 
 <div class="w3-row w3-center w3-dark-grey w3-padding-32">
   <div class="w3-half w3-section">
-    <span class="w3-xlarge">{{ num_groups }}</span><br>
+    <span class="w3-badge w3-blue w3-xlarge">{{ num_groups }}</span><br>
     Meetings
   </div>
   <div class="w3-half w3-section">
-    <span class="w3-xlarge">{{ average }}</span><br>
+    <span class="w3-badge w3-blue w3-xlarge">{{ average }}</span><br>
     Rated
   </div>
 </div>
 
 <div class="w3-container w3-grey w3-center w3-opacity w3-padding-16">
-    <h1 class="w3-margin w3-xlarge">An investment in knowledge always pays the best interest</h1>
+    <h2>An investment in knowledge always pays the best interest</h2>
     <p>-Benjamin Franklin-</p>
 </div>
 

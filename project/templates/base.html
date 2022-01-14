@@ -8,11 +8,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="style.css">
     <style>
         body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
         .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
-        .fa-anchor,.fa-coffee {font-size:200px}
     </style>
 </head>
 
@@ -22,7 +20,7 @@
       <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-blue" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
       <a href="{{ url_for('index') }}" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
       {% if session['logged'] %}
-          <a href="{{ url_for('logout') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Logout</a>
+          <a href="{{ url_for('logout') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right">Logout</a>
           <a href="{{ url_for('groups') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Groups</a>
           <a href="{{ url_for('mygroups') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">My groups</a>
           <a href="{{ url_for('create') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Create a group</a>
@@ -60,10 +58,12 @@
   </div>
   </div>
 
-  <header class="w3-container w3-blue w3-center" style="padding:128px 5px">
+  <header class="w3-display-container w3-blue w3-center" style="padding:128px 5px">
       <img class="w3-round-xlarge" src="{{ url_for('static', filename='images/logo.png') }}" width="450" height="250" alt="Website Logo"/>
       {% if session['logged'] %}
-        <h3>{{ session.get('email') }}</h3>
+          <div class="w3-display-bottomright w3-margin">
+              <h3>{{ session['name'] }}, {{ session['student_id'] }}</h3>
+          </div>
       {% endif %}
   </header>
     {% block content %}

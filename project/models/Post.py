@@ -6,6 +6,8 @@ class Post(db.Model):
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     author = db.Column(db.String(50), db.ForeignKey('student.email'), nullable=False)
+    name = db.Column(db.String(30))
+    surname = db.Column(db.String(30))
     meetings_id = db.Column(db.Integer(), db.ForeignKey('meetings.id'), nullable=False)
     text = db.Column(db.String(260))
 

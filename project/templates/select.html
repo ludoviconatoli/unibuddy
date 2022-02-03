@@ -1,48 +1,62 @@
 {% extends 'base.html' %}
 {% block content %}
-    <table align="center" cellspacing="5">
-        <tr>
-            <td><b>id group</b></td>
-            <td><b>university</b></td>
-            <td><b>subject</b></td>
-            <td><b>email tutor</b></td>
-            <td><b>email headgroup</b></td>
-            <td><b>max members</b></td>
-            <td><b>num participants</b></td>
-            <td><b>day</b></td>
-            <td><b>hour</b></td>
-        </tr>
-        <tr>
-            <td>{{ group.id }}</td>
-            <td>{{ group.university }}</td>
-            <td>{{ subject.subject }}</td>
-            <td>{{ group.email_tutor }}</td>
-            <td>{{ group.email_headgroup }}</td>
-            <td>{{ group.max_members }}</td>
-            <td>{{ group.num_participants }}</td>
-            <td>{{ group.date }}</td>
-            <td>{{ group.hour }}</td>
-            {% if session['email'] == group.email_headgroup %}
-                <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{url_for('delete', id=group.id) }}">Delete group</a></td>
-                <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('add', id=group.id) }}">Add Tutor</a></td>
-            {% else %}
-                <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('abandon', id=group.id) }}">Abandon</a></td>
-            {% endif %}
-
-        </tr>
-    </table>
-    <div class="w3-container w3-center">
-        {% for i in posts %}
-            <p>{{ i.author }}: {{ i.text }}</p>
-        {% endfor %}
+    <div class="w3-center">
+        <h1>Group {{ group.id }}</h1>
     </div>
-    {% if session['email'] == group.email_tutor or session['email'] == group.email_headgroup %}
-        <form action="{{ url_for('select', id=group.id) }}" method="post">
-            <div class="w3-container w3-center">
+    <div class="w3-container w3-padding-64" style="overflow-x:auto;">
+        <table align="center" cellspacing="5">
+            <tr>
+                <td><b>id group</b></td>
+                <td><b>university</b></td>
+                <td><b>subject</b></td>
+                <td><b>email tutor</b></td>
+                <td><b>email headgroup</b></td>
+                <td><b>max members</b></td>
+                <td><b>num participants</b></td>
+                <td><b>day</b></td>
+                <td><b>hour</b></td>
+            </tr>
+            <tr>
+                <td>{{ group.id }}</td>
+                <td>{{ group.university }}</td>
+                <td>{{ subject.subject }}</td>
+                <td>{{ group.email_tutor }}</td>
+                <td>{{ group.email_headgroup }}</td>
+                <td>{{ group.max_members }}</td>
+                <td>{{ group.num_participants }}</td>
+                <td>{{ group.date }}</td>
+                <td>{{ group.hour }}</td>
+                {% if session['email'] == group.email_headgroup %}
+                    <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{url_for('delete', id=group.id) }}">Delete group</a></td>
+                    <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('add', id=group.id) }}#inizio" >Add Tutor</a></td>
+                {% else %}
+                    <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('abandon', id=group.id) }}">Abandon</a></td>
+                {% endif %}
+            </tr>
+        </table>
+    </div>
+    <div class="w3-row">
+        <div class="w3-col s4 w3-center">
+            <p></p>
+        </div>
+        <div class="w3-col s4 w3-yellow w3-center w3-padding w3-border w3-round-large">
+            <h3 class="w3-text-red">Notice-board</h3>
+            {% for i in posts %}
+                <div class="w3-left">
+                    <span class="w3-text-teal">{{ i.name }} {{ i.surname }}</span>
+                    <span>: {{ i.text }}</span>
+                </div><br>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="w3-container w3-center w3-padding-64">
+        {% if session['email'] == group.email_tutor or session['email'] == group.email_headgroup %}
+            <form action="{{ url_for('select', id=group.id) }}" method="post">
                 {{ jform.hidden_tag() }}<br>
-                {{ jform.chat() }}<br>
-                {{ jform.submit() }}
-            </div>
-        </form>
-    {% endif %}
+                {{ jform.chat(class="w3-border w3-border-black w3-round-large") }}<br>
+                {{ jform.submit(class="w3-button w3-blue w3-border w3-border-black w3-round-large") }}
+            </form>
+        {% endif %}
+    </div>
 {% endblock content %}

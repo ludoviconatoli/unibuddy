@@ -76,8 +76,8 @@ class FormRateTutor(FlaskForm):
     submit = SubmitField("Rate")
 
 class FormAdd(FlaskForm):
-    email = StringField('email', validators=[DataRequired(), Email()])
-    submit = SubmitField('add')
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Add Tutor')
 
 class FormTutors(FlaskForm):
     subject = SelectField('subject', choices=[], validators=[DataRequired()])
@@ -116,7 +116,10 @@ def logout():
 
 @app.route('/groups/')
 def groups():
-    meet = Meetings.query.filter_by(university=session.get('university'), study_course=session.get('study_course'))
+    meet = []
+    for i in Meetings.query.filter_by(university=session.get('university'), study_course=session.get('study_course')):
+        meet.append(i)
+
     subject=[]
     for i in meet:
         subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'), study_course=session.get('study_course'))
@@ -124,9 +127,9 @@ def groups():
     if session.get('tutor'):
         tutor = Tutor.query.filter_by(email=session.get('email')).first()
         for i in tutor.subjects:
-            for k in Meetings.query.filter_by(university=session.get('university'), study_course=session.get('study_course'), subject_id=i.subject_id):
+            for k in Meetings.query.filter_by(university=session.get('university'), subject_id=i.subject_id):
                 meet.append(k)
-                subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'), study_course=session.get('study_course'))
+                subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'))
 
     today = date.today()
 
@@ -171,7 +174,10 @@ def join(id):
 
 @app.route('/mygroups/')
 def mygroups():
-    meet = Meetings.query.filter_by(university=session.get('university'), study_course=session.get('study_course'))
+    meet = []
+    for i in Meetings.query.filter_by(university=session.get('university'), study_course=session.get('study_course')):
+        meet.append(i)
+
     user = Student.query.filter_by(email=session.get('email')).first()
     subject = []
     mymeets = []
@@ -185,12 +191,10 @@ def mygroups():
     if session.get('tutor'):
         tutor = Tutor.query.filter_by(email=session.get('email')).first()
         for i in tutor.subjects:
-            for k in Meetings.query.filter_by(university=session.get('university'),
-                                              study_course=session.get('study_course'), subject_id=i.subject_id):
+            for k in Meetings.query.filter_by(university=session.get('university'), subject_id=i.subject_id):
                 if k.email_tutor == session.get('email'):
                     mymeets.append(k)
-                    subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'),
-                                                    study_course=session.get('study_course'))
+                    subject += Subjects.query.filter_by(subject_id=i.subject_id, university=session.get('university'))
 
     today = date.today()
     return render_template('mygroups.html', mymeets=mymeets, subject=subject, today=today)
@@ -206,10 +210,15 @@ def select(id):
 
     if jform.validate_on_submit():
         p = Post(author=user.email, meetings_id=group.id, text=jform.chat.data)
+        p.name = user.name
+        p.surname = user.surname
         db.session.add(p)
         db.session.commit()
 
-    posts = Post.query.filter_by(meetings_id=group.id)
+    posts = []
+    for i in Post.query.filter_by(meetings_id=group.id):
+        posts.append(i)
+
     return render_template('select.html', group=group, jform=jform, subject=subject, posts=posts)
 
 @app.route('/abandon/<int:id>/')

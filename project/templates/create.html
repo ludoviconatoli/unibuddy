@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if session['logged'] %}
-        <div class="w3-row-padding w3-padding-64 w3-container w3-center">
+        <div class="w3-row w3-padding-64 w3-container w3-center">
             <h1>CREATE A GROUP</h1>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -10,16 +10,23 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <form action="{{ url_for('create') }}" method="POST">
-                {{ cform.hidden_tag() }}<br>
-                {{ cform.subject.label }}{{ cform.subject() }}<br>
-                {{ cform.email_tutor.label }}{{ cform.email_tutor() }}<br>
-                {{ cform.max_members.label }}{{ cform.max_members() }}<br>
-                {{ cform.date.label }}{{ cform.date() }}<br>
-                {{ cform.hour.label }}{{ cform.hour() }}<br>
-                {{ cform.submit() }}
-                {{ cform.errors }}
-            </form>
+            <div class="w3-col s4 w3-center">
+                <p></p>
+            </div>
+            <div class="w3-col s4 w3-center">
+                <div class="w3-left">
+                    <form action="{{ url_for('create') }}" method="POST">
+                        {{ cform.hidden_tag() }}<br>
+                        {{ cform.subject.label }}{{ cform.subject() }}<br>
+                        {{ cform.email_tutor.label }}{{ cform.email_tutor() }}<br>
+                        {{ cform.max_members.label }}{{ cform.max_members() }}<br>
+                        {{ cform.date.label }}{{ cform.date() }}<br>
+                        {{ cform.hour.label }}{{ cform.hour() }}<br>
+                        {{ cform.submit(class="w3-button w3-blue w3-border w3-border-black w3-round-large") }}
+                        {{ cform.errors }}
+                    </form>
+                </div>
+            </div>
         </div>
     {% else %}
         <div class="w3-center">

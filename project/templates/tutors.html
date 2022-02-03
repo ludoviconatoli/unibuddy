@@ -9,6 +9,7 @@
             </form>
         </div>
         {% if list_tutors %}
+        <div class="w3-container w3-padding-64" style="overflow-x:auto;">
             <table align="center" cellspacing="5">
                 <tr><th colspan="6">TUTORS</th></tr>
                 <tr>
@@ -30,6 +31,7 @@
                     </tr>
                 {% endfor %}
             </table>
+        </div>
         {% endif %}
     {% else %}
         <div class="w3-center">

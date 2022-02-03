@@ -2,18 +2,26 @@
 {% block content %}
     {% if session['logged'] %}
         <div class="w3-container w3-center">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                 {% for message in messages %}
-                    <b>{{ message }}</b>
-                 {% endfor %}
-            {% endif %}
-        {% endwith %}
-        <form action="{{ url_for('add', id=group.id) }}" method="post">
-            {{ aform.hidden_tag() }}<br>
-            {{ aform.email.label }}{{ aform.email() }}<br>
-            {{ aform.submit() }}
-        </form>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <b>{{ message }}</b>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="w3-container w3-padding-64 w3-center">
+            <form action="{{ url_for('add', id=group.id) }}" method="post">
+                <h3>Add a Tutor</h3>
+                <div class="w3-container">
+                    {{ aform.hidden_tag() }}<br>
+                    {{ aform.email.label }} {{ aform.email(class="w3-round-large") }}
+                </div>
+                <br>
+                <div class="w3-container">
+                    {{ aform.submit(class="w3-button w3-blue w3-border w3-border-black w3-round-large") }}
+                </div>
+            </form>
         </div>
     {% else %}
         <div class="w3-center">

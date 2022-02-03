@@ -60,20 +60,6 @@ db.session.commit()
 db.session.add(stud6)
 db.session.commit()
 
-meet1 = Meetings("Politecnico di Torino", "Management Engineering", "02PDWPH", "", "s302249@studenti.polito.it", 10, 1, datetime.date(2022, 1, 10), datetime.time(16, 30))
-meet1.students = [stud3]
-meet2 = Meetings("Politecnico di Torino", "Management Engineering", "05OIYPH", "", "s302572@studenti.polito.it", 5, 3, datetime.date(2022, 1, 12), datetime.time(14,30))
-meet2.students=[stud1, stud2, stud3]
-
-db.session.add(meet1)
-db.session.commit()
-db.session.add(meet2)
-db.session.commit()
-
-
-post1 = Post("s302572@studenti.polito.it", 2, "study")
-db.session.add(post1)
-db.session.commit()
 
 tutor1 = Tutor("s295977@studenti.polito.it", "s295977", "Michele", "Chiantera", "Politecnico di Torino")
 tutor1.subjects = [subject_a]
@@ -85,9 +71,33 @@ db.session.commit()
 db.session.add(tutor2)
 db.session.commit()
 
+meet1 = Meetings("Politecnico di Torino", "Management Engineering", "02PDWPH", "", "s302249@studenti.polito.it", 10, 1, datetime.date(2022, 3, 10), datetime.time(16, 30))
+meet1.students = [stud3]
+meet2 = Meetings("Politecnico di Torino", "Management Engineering", "05OIYPH", "", "s302572@studenti.polito.it", 5, 3, datetime.date(2022, 3, 12), datetime.time(14, 30))
+meet2.students = [stud1, stud2, stud3]
+meet3 = Meetings("Politecnico di Torino", "Ingegneria Gestionale", "16ACFPL", "s295977@studenti.polito.it", "s295977@studenti.polito.it", 5, 2, datetime.date(2022, 3, 4), datetime.time(14, 30))
+meet3.students = [stud2, stud4]
+
+db.session.add(meet1)
+db.session.commit()
+db.session.add(meet2)
+db.session.commit()
+db.session.add(meet3)
+db.session.commit()
+
+post1 = Post("s302572@studenti.polito.it", 2, "study")
+post1.name = 'Ludovico'
+post1.surname = 'Natoli'
+
+db.session.add(post1)
+db.session.commit()
+
 rate1 = Ratings(4, "")
+rate2 = Ratings(4, "s295977@studenti.polito.it")
 
 db.session.add(rate1)
+db.session.commit()
+db.session.add(rate2)
 db.session.commit()
 
 courses = Post.query.all()

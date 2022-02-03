@@ -27,12 +27,12 @@
                 {{ logform.hidden_tag() }}
                 {{ logform.username.label }}
                 <br>
-                {{ logform.username() }}
+                {{ logform.username(class="w3-round-large") }}
             </div><br>
             <div class="w3-container">
                 {{ logform.password.label() }}
                 <br>
-                {{ logform.password() }}
+                {{ logform.password(class="w3-round-large") }}
             </div><br>
             {{ logform.submit(class="w3-button w3-blue w3-border w3-border-black w3-round-large") }}
         </form>

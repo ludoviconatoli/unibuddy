@@ -1,36 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if session['logged'] %}
-        <h1 class="w3-center">MY GROUPS</h1>
-        <table align="center" cellspacing="5">
-            <tr>
-                <td><b>id group</b></td>
-                <td><b>university</b></td>
-                <td><b>subject</b></td>
-                <td><b>email tutor</b></td>
-                <td><b>email headgroup</b></td>
-                <td><b>max members</b></td>
-                <td><b>num participants</b></td>
-                <td><b>day</b></td>
-                <td><b>hour</b></td>
-            </tr>
-            {% for i in mymeets %}
-                {% if i.date >= today %}
-                    <tr>
-                        <td>{{ i.id }}</td>
-                        <td>{{ i.university }}</td>
-                        <td>{{ subject[loop.index0].subject }}</td>
-                        <td>{{ i.email_tutor }}</td>
-                        <td>{{ i.email_headgroup }}</td>
-                        <td>{{ i.max_members }}</td>
-                        <td>{{ i.num_participants }}</td>
-                        <td>{{ i.date }}</td>
-                        <td>{{ i.hour }}</td>
-                        <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('select', id=i.id) }}">Select</a></td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
+        <div class="w3-center">
+            <h1>MY GROUPS</h1>
+        </div>
+        <div class="w3-padding-64" style="overflow-x:auto;">
+            <table align="center" cellspacing="5">
+                <tr>
+                    <td><b>id group</b></td>
+                    <td><b>university</b></td>
+                    <td><b>subject</b></td>
+                    <td><b>email tutor</b></td>
+                    <td><b>email headgroup</b></td>
+                    <td><b>max members</b></td>
+                    <td><b>num participants</b></td>
+                    <td><b>day</b></td>
+                    <td><b>hour</b></td>
+                </tr>
+                {% for i in mymeets %}
+                    {% if i.date >= today %}
+                        <tr>
+                            <td>{{ i.id }}</td>
+                            <td>{{ i.university }}</td>
+                            <td>{{ subject[loop.index0].subject }}</td>
+                            <td>{{ i.email_tutor }}</td>
+                            <td>{{ i.email_headgroup }}</td>
+                            <td>{{ i.max_members }}</td>
+                            <td>{{ i.num_participants }}</td>
+                            <td>{{ i.date }}</td>
+                            <td>{{ i.hour }}</td>
+                            <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('select', id=i.id) }}">Select</a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
     {% else %}
         <div class="w3-center">
             <h1>ERROR</h1>

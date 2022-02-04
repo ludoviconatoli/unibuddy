@@ -50,15 +50,15 @@ class FormJoin(FlaskForm):
 
 class FormCreate(FlaskForm):
 
-    subject = SelectField("subject", choices=[], validators=[DataRequired()])
-    email_tutor = StringField("email_tutor")
-    max_members = IntegerField("max_members", validators=[DataRequired()])
-    date = DateField("date", format='%Y-%m-%d', validators=[DataRequired()])
-    hour = TimeField("hour", format='%H:%M', validators=[DataRequired()])
-    submit = SubmitField("create")
+    subject = SelectField("Subject", choices=[], validators=[DataRequired()])
+    email_tutor = StringField("Email Tutor")
+    max_members = IntegerField("Max members", validators=[DataRequired()])
+    date = DateField("Date", format='%Y-%m-%d', validators=[DataRequired()])
+    hour = TimeField("Hour", format='%H:%M', validators=[DataRequired()])
+    submit = SubmitField("Create")
 
     def validate_date(self, date):
-        today=datetime.today()
+        today = datetime.today()
         if date.data < today.date():
             raise ValidationError('The date must be in the future')
 
@@ -72,7 +72,7 @@ class FormRate(FlaskForm):
 
 class FormRateTutor(FlaskForm):
     rating = RadioField('rating tutor', choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], validators=[DataRequired()])
-    email_tutor = StringField("email_tutor", validators=[DataRequired(), Email()])
+    email_tutor = StringField("Email Tutor", validators=[DataRequired(), Email()])
     submit = SubmitField("Rate")
 
 class FormAdd(FlaskForm):
@@ -80,8 +80,8 @@ class FormAdd(FlaskForm):
     submit = SubmitField('Add Tutor')
 
 class FormTutors(FlaskForm):
-    subject = SelectField('subject', choices=[], validators=[DataRequired()])
-    submit = SubmitField('submit')
+    subject = SelectField('Subject', choices=[], validators=[DataRequired()])
+    submit = SubmitField('Submit')
 
 @app.route('/login/', methods=["GET", "POST"])
 def login():
@@ -348,7 +348,7 @@ def add(id, **kwargs):
             return redirect(url_for('add', id=id))
     return render_template('add_tutor.html', aform=aform, group=group)
 
-@app.route('/tutors', methods=["GET", "POST"])
+@app.route('/tutors/', methods=["GET", "POST"])
 def tutors():
     tform = FormTutors()
     list_subjects = []

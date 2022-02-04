@@ -29,7 +29,7 @@
                             <td>{{ i.num_participants }}</td>
                             <td>{{ i.date }}</td>
                             <td>{{ i.hour }}</td>
-                            <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('select', id=i.id) }}">Select</a></td>
+                            <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('select', id=i.id) }}#inizio">Select</a></td>
                         </tr>
                     {% endif %}
                 {% endfor %}

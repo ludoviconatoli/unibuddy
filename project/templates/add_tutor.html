@@ -11,7 +11,7 @@
             {% endwith %}
         </div>
         <div class="w3-container w3-padding-64 w3-center">
-            <form action="{{ url_for('add', id=group.id) }}" method="post">
+            <form action="{{ url_for('add', id=group.id) }}#inizio" method="post">
                 <h3>Add a Tutor</h3>
                 <div class="w3-container">
                     {{ aform.hidden_tag() }}<br>

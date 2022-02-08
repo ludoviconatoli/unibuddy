@@ -1,0 +1,17 @@
+input[type='radio'] {
+    position: absolute;
+    display: none;
+}
+input[type='radio'] + label:after{ content: none}
+input[type='radio'] + label {
+    margin: 0;
+    padding: 2px 0 0px 24px;
+    cursor: pointer;
+    background: url(images/star.svg) left center no-repeat;
+    cursor: pointer;
+}
+
+input[type='radio']:checked + label {
+
+    background-image: url(images/star-fill.svg);
+}

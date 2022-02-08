@@ -5,12 +5,12 @@
             <h3>Rating the system</h3>
             <form action="{{ url_for('rate') }}#inizio" method="POST">
                 {{ rform.hidden_tag() }} <br>
-                {% for subfield in rform.rating %}
-                    <span class="fa fa-star-o" style="font-size: 36px">
+                <div class="w3-xxlarge">
+                    {% for subfield in rform.rating %}
                         {{ subfield }}
-                    </span>
-                    {{ subfield.label() }}
-                {% endfor %}
+                        {{ subfield.label() }}
+                    {% endfor %}
+                </div>
                 <br><br>
                 {{ rform.submit(class="w3-button w3-blue w3-border w3-border-black w3-round-large") }}
             </form>

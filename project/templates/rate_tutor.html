@@ -12,13 +12,23 @@
             {% endwith %}
             <form action="{{ url_for('rate_tutor') }}#inizio" method="POST">
                 {{ rtform.hidden_tag() }}<br>
-                {% for subfield in rtform.rating %}
-                    {{ subfield }}{{ subfield.label }}
-                {% endfor %}
+                <div class="w3-xlarge">
+                    {% for subfield in rtform.rating %}
+                        {{ subfield }}{{ subfield.label }}
+                    {% endfor %}
+                </div>
                 <br>
-                {{ rtform.email_tutor.label }}{{ rtform.email_tutor() }}<br>
-                {{ rtform.submit() }}
-                {{ rtform.errors }}
+                <div class="w3-container w3-padding">
+                    {{ rtform.email_tutor.label }} {{ rtform.email_tutor(class="w3-round-large") }}<br>
+                </div>
+                <div class="w3-container w3-padding">
+                    {{ rtform.submit(class="w3-button w3-blue w3-border w3-border-black w3-round-large") }}
+                </div>
+                {% if rtform.errors %}
+                    <div class="w3-container w3-padding">
+                        {{ rtform.errors }}
+                    </div>
+                {% endif %}
             </form>
         </div>
     {% else %}

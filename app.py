@@ -1,13 +1,9 @@
 from datetime import date, datetime
 
-from flask import Flask, session, redirect, url_for, flash
+from flask import Flask, session, redirect, url_for, flash, request
 from flask import render_template
-from flask_wtf import FlaskForm
-from sqlalchemy import Integer
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, DateField, TimeField, \
-    SelectField, RadioField
-from wtforms.validators import DataRequired, Length, Email, ValidationError
 
+from forms import FormLogin, FormAdd, FormJoin, FormRate, FormTutors, FormRateTutor, FormCreate, FormLogout
 from project import app
 from project.models.Student import Student
 from project.models.Subjects import Subjects
@@ -27,61 +23,14 @@ def index():
     for i in Meetings.query.all():
         num_groups += 1
 
-    sum=0
-    num=0
+    sum = 0
+    num = 0
     for i in Ratings.query.filter_by(email_tutor=""):
         sum += i.rating
         num += 1
 
-    average = sum/num
+    average = sum / num
     return render_template("start.html", num_groups=num_groups, average=average)
-
-class FormLogin(FlaskForm):
-    username = StringField("Email", validators=[DataRequired(), Email()])
-    password = PasswordField("Password", validators=[DataRequired()])
-    submit = SubmitField("Sign in")
-
-class FormLogout(FlaskForm):
-    submit = SubmitField("Logout")
-
-class FormJoin(FlaskForm):
-    chat = TextAreaField("chat", validators=[DataRequired()])
-    submit = SubmitField("Post")
-
-class FormCreate(FlaskForm):
-
-    subject = SelectField("Subject", choices=[], validators=[DataRequired()])
-    email_tutor = StringField("Email Tutor")
-    max_members = IntegerField("Max members", validators=[DataRequired()])
-    date = DateField("Date", format='%Y-%m-%d', validators=[DataRequired()])
-    hour = TimeField("Hour", format='%H:%M', validators=[DataRequired()])
-    submit = SubmitField("Create")
-
-    def validate_date(self, date):
-        today = datetime.today()
-        if date.data < today.date():
-            raise ValidationError('The date must be in the future')
-
-    def validate_max_members(self, max_members):
-        if max_members.data <= 1:
-            raise ValidationError('The number of students must be higher than 1')
-
-class FormRate(FlaskForm):
-    rating = RadioField('rating', choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], validators=[DataRequired()])
-    submit = SubmitField("Rate")
-
-class FormRateTutor(FlaskForm):
-    rating = RadioField('rating tutor', choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], validators=[DataRequired()])
-    email_tutor = StringField("Email Tutor", validators=[DataRequired(), Email()])
-    submit = SubmitField("Rate")
-
-class FormAdd(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    submit = SubmitField('Add Tutor')
-
-class FormTutors(FlaskForm):
-    subject = SelectField('Subject', choices=[], validators=[DataRequired()])
-    submit = SubmitField('Submit')
 
 @app.route('/login/', methods=["GET", "POST"])
 def login():
@@ -215,9 +164,9 @@ def select(id):
         db.session.add(p)
         db.session.commit()
 
-    posts = []
-    for i in Post.query.filter_by(meetings_id=group.id):
-        posts.append(i)
+
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.filter_by(meetings_id=group.id).paginate(page=page, per_page=5)
 
     return render_template('select.html', group=group, jform=jform, subject=subject, posts=posts)
 
@@ -240,6 +189,7 @@ def delete(id):
     db.session.commit()
 
     return redirect(url_for('mygroups'))
+
 @app.route('/create/', methods=["GET", "POST"])
 def create(**kwargs):
     list_subjects=[]
@@ -426,6 +376,14 @@ def send_email(email, id, **kwargs):
     msg = Message('Unibuddy Account -- Request of tutor', recipients=[email], sender='unibuddywebsite@gmail.com')
     msg.body = render_template('email.txt', s=s, **kwargs)
     mail.send(msg)
+
+@app.errorhandler(404)
+def error_404(error):
+	return render_template('404.html')
+
+@app.errorhandler(500)
+def error_500(error):
+	return render_template('500.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

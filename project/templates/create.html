@@ -22,36 +22,42 @@
                             {{ cform.hidden_tag() }}<br>
                             {{ cform.subject.label }}
                             <span class="w3-right">
-                                {{ cform.subject() }}<br>
+                                {{ cform.subject(class='w3-round-large') }}<br>
                             </span>
                         </div>
                         <div class="w3-container w3-padding">
                             {{ cform.email_tutor.label }}
                             <span class="w3-right">
-                                {{ cform.email_tutor() }}<br>
+                                {{ cform.email_tutor(class='w3-round-large') }}<br>
                             </span>
                         </div>
                         <div class="w3-container w3-padding">
                             {{ cform.max_members.label }}
                             <span class="w3-right">
-                                {{ cform.max_members() }}<br>
+                                {{ cform.max_members(class='w3-round-large') }}<br>
                             </span>
                         </div>
                         <div class="w3-container w3-padding">
                             {{ cform.date.label }}
                             <span class="w3-right">
-                                {{ cform.date() }}<br>
+                                {{ cform.date(class='w3-round-large') }}<br>
                             </span>
                         </div>
                         <div class="w3-container w3-padding">
                             {{ cform.hour.label }}
                             <span class="w3-right">
-                                {{ cform.hour() }}<br>
+                                {{ cform.hour(class='w3-round-large') }}<br>
                             </span>
                         </div>
                     </div>
                         {{ cform.submit(class="w3-button w3-blue w3-border w3-border-black w3-round-large") }}<br>
-                        {{ cform.errors }}
+                        {% if cform.errors %}
+                            <div class="w3-container w3-padding">
+                                {% for error in cform.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                 </form>
             </div>
         </div>

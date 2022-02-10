@@ -85,11 +85,32 @@ db.session.commit()
 db.session.add(meet3)
 db.session.commit()
 
-post1 = Post("s302572@studenti.polito.it", 2, "study")
+post1 = Post("s302572@studenti.polito.it", 2, "Hi guys")
 post1.name = 'Ludovico'
 post1.surname = 'Natoli'
 
 db.session.add(post1)
+db.session.commit()
+
+post2 = Post("s302572@studenti.polito.it", 2, "See tomorrow")
+post2.name = 'Ludovico'
+post2.surname = 'Natoli'
+
+db.session.add(post2)
+db.session.commit()
+
+post3 = Post("s302572@studenti.polito.it", 2, "Study")
+post3.name = 'Ludovico'
+post3.surname = 'Natoli'
+
+db.session.add(post3)
+db.session.commit()
+
+post4 = Post("s302572@studenti.polito.it", 2, "Goodbye")
+post4.name = 'Ludovico'
+post4.surname = 'Natoli'
+
+db.session.add(post4)
 db.session.commit()
 
 rate1 = Ratings(4, "")

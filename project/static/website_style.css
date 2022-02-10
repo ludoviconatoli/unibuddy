@@ -1,17 +1,20 @@
-input[type='radio'] {
-    position: absolute;
-    display: none;
-}
-input[type='radio'] + label:after{ content: none}
-input[type='radio'] + label {
-    margin: 0;
-    padding: 2px 0 0px 24px;
-    cursor: pointer;
-    background: url(images/star.svg) left center no-repeat;
-    cursor: pointer;
+input[type="radio"] { display: none; }
+input[type="radio"] + label:after { content: none; }
+input[type="radio"] + label { font-family: 'FontAwesome'; }
+input[type="radio"] + label:before {
+    background-color: transparent;
+    border: none;
+    color: #ffc107;
+    content: '\f005';
+    font-size: 1.33333333em;
+    transition: none;
 }
 
-input[type='radio']:checked + label {
-
-    background-image: url(images/star-fill.svg);
+input[type="radio"]:checked ~ label:before {
+    background-color: transparent;
+    border: none;
+    color: #607d8b;
 }
+
+input[type="radio"]:checked + label:before { color: #ffc107; }
+input[type="radio"] + label:hover ~ input + label:before { opacity: 0.6}

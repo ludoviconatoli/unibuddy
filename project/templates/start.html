@@ -11,7 +11,7 @@
     <style>
         body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
         .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
-        .fa-anchor,.fa-coffee {font-size:200px}
+        .fa-anchor,.fa-graduation-cap {font-size:200px}
         .back {background: url("https://tse3.mm.bing.net/th?id=OIP.ZfMS_tvxOv30i1wlDTW3iwHaE8&pid=Api&P=0&w=296&h=198");
             background-repeat: no-repeat; background-position: center center; background-size: 100%;}
     </style>
@@ -71,8 +71,8 @@
         </div>
     {% else %}
         <div class="w3-container">
-            <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">
-                <a href="{{ url_for('login') }}">Get Started</a>
+            <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-round-large">
+                <a href="{{ url_for('login') }}" style="text-decoration: none">Get Started</a>
             </button>
         </div>
     {% endif %}
@@ -102,7 +102,7 @@
 <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
   <div class="w3-content">
     <div class="w3-third w3-center">
-        <i class="fa fa-coffee w3-padding-64 w3-text-blue w3-margin-right"></i>
+        <i class="fa fa-graduation-cap w3-padding-64 w3-text-blue w3-margin-right"></i>
     </div>
 
     <div class="w3-twothird">

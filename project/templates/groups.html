@@ -27,7 +27,7 @@
                             <td>{{ i.num_participants }}</td>
                             <td>{{ i.date }}</td>
                             <td>{{ i.hour }}</td>
-                            <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('join', id=i.id) }}#inizio">Join</a></td>
+                            <td><a class="w3-button w3-blue w3-border w3-border-black w3-round-large" href="{{ url_for('meets.join', id=i.id) }}#inizio">Join</a></td>
                         </tr>
                     {% endif %}
                 {% endfor %}

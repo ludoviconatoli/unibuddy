@@ -22,42 +22,42 @@
 <div class="w3-top">
   <div class="w3-bar w3-black w3-card w3-left-align w3-large">
       <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-blue" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-      <a href="{{ url_for('index') }}" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
+      <a href="{{ url_for('main.index') }}" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
       {% if session['logged'] %}
-          <a href="{{ url_for('logout') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right">Logout</a>
-          <a href="{{ url_for('groups') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Groups</a>
-          <a href="{{ url_for('mygroups') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">My groups</a>
-          <a href="{{ url_for('create') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Create a group</a>
-          <a href="{{ url_for('tutors') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Tutors</a>
+          <a href="{{ url_for('users.logout') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right">Logout</a>
+          <a href="{{ url_for('meets.groups') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Groups</a>
+          <a href="{{ url_for('meets.mygroups') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">My groups</a>
+          <a href="{{ url_for('meets.create') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Create a group</a>
+          <a href="{{ url_for('meets.tutors') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Tutors</a>
           <div class="w3-dropdown-hover">
               <button class="w3-button">Rate</button>
               <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                  <a href="{{ url_for('rate') }}#inizio" class="w3-bar-item w3-button">The System</a>
-                  <a href="{{ url_for('rate_tutor') }}#inizio" class="w3-bar-item w3-button">A tutor</a>
+                  <a href="{{ url_for('main.rate') }}#inizio" class="w3-bar-item w3-button">The System</a>
+                  <a href="{{ url_for('main.rate_tutor') }}#inizio" class="w3-bar-item w3-button">A tutor</a>
               </div>
           </div>
       {% else %}
-          <a href="{{ url_for('login') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Login</a>
+          <a href="{{ url_for('users.login') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Login</a>
       {% endif %}
   </div>
 
   <!-- Navbar on small screens -->
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
       {% if session['logged'] %}
-          <a href="{{ url_for('logout') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Logout</a>
-          <a href="{{ url_for('groups') }}#inizio" class="w3-bar-item w3-button w3-padding-large">Groups</a>
-          <a href="{{ url_for('mygroups') }}#inizio" class="w3-bar-item w3-button w3-padding-large">My groups</a>
-          <a href="{{ url_for('create') }}#inizio" class="w3-bar-item w3-button w3-padding-large">Create a group</a>
-          <a href="{{ url_for('tutors') }}#inizio" class="w3-bar-item w3-button w3-padding-large">Tutors</a>
+          <a href="{{ url_for('users.logout') }}#inizio" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Logout</a>
+          <a href="{{ url_for('meets.groups') }}#inizio" class="w3-bar-item w3-button w3-padding-large">Groups</a>
+          <a href="{{ url_for('meets.mygroups') }}#inizio" class="w3-bar-item w3-button w3-padding-large">My groups</a>
+          <a href="{{ url_for('meets.create') }}#inizio" class="w3-bar-item w3-button w3-padding-large">Create a group</a>
+          <a href="{{ url_for('meets.tutors') }}#inizio" class="w3-bar-item w3-button w3-padding-large">Tutors</a>
           <div class="w3-dropdown-hover">
               <button class="w3-button">Rate</button>
               <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                  <a href="{{ url_for('rate') }}#inizio" class="w3-bar-item w3-button">The System</a>
-                  <a href="{{ url_for('rate_tutor') }}#inizio" class="w3-bar-item w3-button">A tutor</a>
+                  <a href="{{ url_for('main.rate') }}#inizio" class="w3-bar-item w3-button">The System</a>
+                  <a href="{{ url_for('main.rate_tutor') }}#inizio" class="w3-bar-item w3-button">A tutor</a>
               </div>
           </div>
       {% else %}
-          <a href="{{ url_for('login') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Login</a>
+          <a href="{{ url_for('users.login') }}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Login</a>
       {% endif %}
   </div>
 </div>
@@ -72,7 +72,7 @@
     {% else %}
         <div class="w3-container">
             <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-round-large">
-                <a href="{{ url_for('login') }}" style="text-decoration: none">Get Started</a>
+                <a href="{{ url_for('users.login') }}" style="text-decoration: none">Get Started</a>
             </button>
         </div>
     {% endif %}

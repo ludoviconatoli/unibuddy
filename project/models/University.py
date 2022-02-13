@@ -22,4 +22,4 @@ class University(db.Model):
         self.name = name
 
     def __repr__(self):
-        return ('\n ' + self.name)
+        return (self.name)

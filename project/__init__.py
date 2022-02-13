@@ -1,27 +1,21 @@
-import os, getenv
-from pathlib import Path
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
+from project.config import Config
 
-app = Flask(__name__, static_folder="static")
-
-Bootstrap(app)
-
-app.config["SECRET_KEY"] = "chiavesupersegreta"
-
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config ["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "db.sqlite")
-
-app.config["SQLALCHEMY_TRSCK_MODIFICATIONS"] = False
+app = Flask(__name__)
+app.config.from_object(Config)
 
 db = SQLAlchemy(app)
-
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = 'unibuddywebsite@gmail.com'
-app.config['MAIL_PASSWORD'] = 'Studygroup1!'
-app.config['MAIL_USE_TLS'] = True
-
 mail = Mail(app)
+
+from project.users.routes import users
+from project.groups.routes import meets
+from project.main.routes import main
+
+app.register_blueprint(users)
+app.register_blueprint(meets)
+app.register_blueprint(main)
+
+Bootstrap(app)

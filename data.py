@@ -121,5 +121,5 @@ db.session.commit()
 db.session.add(rate2)
 db.session.commit()
 
-courses = Post.query.all()
-print(courses)
+unis = University.query.all()
+print(unis)

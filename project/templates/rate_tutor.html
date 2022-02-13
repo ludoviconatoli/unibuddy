@@ -10,7 +10,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <form action="{{ url_for('rate_tutor') }}#inizio" method="POST">
+            <form action="{{ url_for('main.rate_tutor') }}#inizio" method="POST">
                 {{ rtform.hidden_tag() }}<br>
                 <div class="w3-xlarge">
                     {% for subfield in rtform.rating %}

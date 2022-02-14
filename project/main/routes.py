@@ -4,6 +4,7 @@ from project import db
 from project.main.forms import FormRate, FormRateTutor
 from project.models.Meetings import Meetings
 from project.models.Ratings import Ratings
+from project.models.Subjects import Subjects
 from project.models.Tutor import Tutor
 
 main = Blueprint('main', __name__)
@@ -39,6 +40,7 @@ def rate():
 def rate_tutor():
     rtform = FormRateTutor()
 
+    #controllo che tu non voti un tuo amico
     if rtform.validate_on_submit():
         if Tutor.query.filter_by(email=rtform.email_tutor.data).first():
             if session.get('tutor') and session.get('email') == rtform.email_tutor.data:
@@ -62,7 +64,7 @@ def rate_tutor():
             return redirect(url_for('main.index'))
         else:
             flash('The email inserted is not referred to a tutor')
-            return redirect(url_for('main.rate'))
+            return redirect(url_for('main.rate_tutor'))
 
     return render_template('rate_tutor.html', rtform=rtform)
 

@@ -61,9 +61,9 @@ db.session.add(stud6)
 db.session.commit()
 
 
-tutor1 = Tutor("s295977@studenti.polito.it", "s295977", "Michele", "Chiantera", "Politecnico di Torino")
+tutor1 = Tutor("s295977@studenti.polito.it", "Pluto9!", "s295977", "Michele", "Chiantera", "Management Engineering", "Politecnico di Torino")
 tutor1.subjects = [subject_a]
-tutor2 = Tutor("s302249@studenti.polito.it", "s302249", "Davide", "Decurti", "Politecnico di Torino")
+tutor2 = Tutor("s302249@studenti.polito.it", "Rossi9!", "s302249", "Davide", "Decurti", "Management Engineering", "Politecnico di Torino")
 tutor2.subjects = [subject_a]
 
 db.session.add(tutor1)

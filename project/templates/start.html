@@ -12,7 +12,7 @@
         body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
         .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
         .fa-anchor,.fa-graduation-cap {font-size:200px}
-        .back {background: url("https://tse3.mm.bing.net/th?id=OIP.ZfMS_tvxOv30i1wlDTW3iwHaE8&pid=Api&P=0&w=296&h=198");
+        .back {background: url('https://www.centroitineris.it/wp-content/uploads/2018/09/Metodo-Studio.jpg');
             background-repeat: no-repeat; background-position: center center; background-size: 100%;}
     </style>
 </head>
@@ -63,11 +63,11 @@
 </div>
 
 <!-- Header -->
-<header class="w3-display-container w3-blue w3-center " style="padding:128px 16px; ">
-    <img class="w3-round-xlarge" src="{{ url_for('static', filename='images/logo.png') }}" width="450" height="250" alt="Website Logo"/>
+<header class="back w3-display-container w3-blue w3-center " style="padding:128px 16px; ">
+    <img class="w3-hover-shadow w3-round-xlarge" src="{{ url_for('static', filename='images/logo.png') }}" width="450" height="250" alt="Website Logo"/>
     {% if session['logged'] %}
         <div class="w3-display-bottomcenter w3-margin">
-            <h3>{{ session['name'] }} {{ session['surname'] }}</h3>
+            <h3 class="w3-text-black">{{ session['name'] }} {{ session['surname'] }}</h3>
         </div>
     {% else %}
         <div class="w3-container">

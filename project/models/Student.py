@@ -21,6 +21,11 @@ class Student(db.Model):
     headgroups = db.relationship("Meetings", backref="meetings.email_headgroup")
     posts = db.relationship("Post", backref="post.author")
 
+    #__mapper_args__ = {
+    #    'polymorphic_on': study_course,
+    #    'polymorphic_identity': 'student'
+    #}
+
     def __init__(self, email, password, student_id, name, surname, study_course, university):
         self.email = email
         self.password = password

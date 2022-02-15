@@ -40,38 +40,35 @@ def rate():
 def rate_tutor():
     rtform = FormRateTutor()
 
-    #controllo che tu non voti un tuo amico
     if rtform.validate_on_submit():
         if Tutor.query.filter_by(email=rtform.email_tutor.data).first():
             if session.get('tutor') and session.get('email') == rtform.email_tutor.data:
                 flash('You cannot rate yourself')
-                return redirect(url_for('main.rate'))
+                return redirect(url_for('main.rate_tutor'))
 
-            rate = Ratings(rating=rtform.rating.data, email_tutor=rtform.email_tutor.data)
-            db.session.add(rate)
-            db.session.commit()
+            for i in Subjects.query.filter_by(study_course=session.get('study_course'), university=session.get('university')):
+                t = Tutor.query.filter_by(email=rtform.email_tutor.data).first()
+                for j in t.subjects:
+                    if i.subject_id == j.subject_id:
+                        rate = Ratings(rating=rtform.rating.data, email_tutor=rtform.email_tutor.data)
+                        db.session.add(rate)
+                        db.session.commit()
 
-            ratings = Ratings.query.filter_by(email_tutor=rtform.email_tutor.data)
-            sum=0
-            k=0
-            for i in ratings:
-                sum += i.rating
-                k += 1
+                        ratings = Ratings.query.filter_by(email_tutor=rtform.email_tutor.data)
+                        sum = 0
+                        k = 0
+                        for i in ratings:
+                            sum += i.rating
+                            k += 1
 
-            tutor = Tutor.query.filter_by(email=rtform.email_tutor.data).first()
-            tutor.average_rating = sum/k
-            db.session.commit()
-            return redirect(url_for('main.index'))
+                        t.average_rating = sum / k
+                        db.session.commit()
+                        return redirect(url_for('main.index'))
+            flash('You have inserted a tutor of subjects you do not attend')
+            return redirect(url_for('main.rate_tutor'))
         else:
             flash('The email inserted is not referred to a tutor')
             return redirect(url_for('main.rate_tutor'))
 
     return render_template('rate_tutor.html', rtform=rtform)
 
-@main.errorhandler(404)
-def error_404(error):
-	return render_template('404.html')
-
-@main.errorhandler(500)
-def error_500(error):
-	return render_template('500.html')

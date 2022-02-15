@@ -185,24 +185,33 @@ def create(**kwargs):
                     db.session.commit()
                     return redirect(url_for('meets.mygroups'))
                 else:
-                    sub = Subjects.query.filter_by(university=session.get('university'),
-                                                   study_course=session.get('study_course'),
-                                                   subject=cform.subject.data).first()
-                    meet = Meetings(university=session.get('university'), study_course=session.get('study_course'),
-                                    subject_id=sub.subject_id, email_tutor=cform.email_tutor.data,
-                                    email_headgroup=session.get('email'),
-                                    max_members=cform.max_members.data, num_participants=1, date=cform.date.data,
-                                    hour=cform.hour.data)
+                    for i in Subjects.query.filter_by(study_course=session.get('study_course'),
+                                                      university=session.get('university')):
+                        t = Tutor.query.filter_by(email=cform.email_tutor.data).first()
+                        for j in t.subjects:
+                            if i.subject_id == j.subject_id:
+                                sub = Subjects.query.filter_by(university=session.get('university'),
+                                                               study_course=session.get('study_course'),
+                                                               subject=cform.subject.data).first()
+                                meet = Meetings(university=session.get('university'),
+                                                study_course=session.get('study_course'),
+                                                subject_id=sub.subject_id, email_tutor=cform.email_tutor.data,
+                                                email_headgroup=session.get('email'),
+                                                max_members=cform.max_members.data, num_participants=1,
+                                                date=cform.date.data,
+                                                hour=cform.hour.data)
 
-                    db.session.add(meet)
-                    db.session.commit()
+                                db.session.add(meet)
+                                db.session.commit()
 
-                    user = Student.query.filter_by(email=session.get('email')).first()
-                    meet.students.append(user)
-                    db.session.commit()
-                    send_email(cform.email_tutor.data, meet.id, **kwargs)
+                                user = Student.query.filter_by(email=session.get('email')).first()
+                                meet.students.append(user)
+                                db.session.commit()
+                                send_email(cform.email_tutor.data, meet.id, **kwargs)
 
-                    return redirect(url_for('meets.mygroups'))
+                                return redirect(url_for('meets.mygroups'))
+                    flash('You have inserted a tutor of subjects you do not attend')
+                    return redirect(url_for('meets.create'))
             else:
                 flash('The student inserted is not a tutor')
                 return redirect(url_for('meets.create'))
@@ -242,7 +251,7 @@ def add(id, **kwargs):
                     send_email(aform.email.data, group.id, **kwargs)
                     return redirect(url_for('meets.mygroups'))
 
-            flash('The email inserted is referred to a person that is not a tutor in the subject of the group')
+            flash('The email inserted is referred to a person that is not a tutor of the subject of the group')
             return redirect(url_for('meets.add', id=id))
         else:
             flash('The email inserted is referred to a person that is not a tutor')

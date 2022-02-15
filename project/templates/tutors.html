@@ -12,9 +12,9 @@
             </form>
         </div>
         {% if list_tutors %}
-        <div class="w3-container w3-padding-64" style="overflow-x:auto;">
-            <table align="center" cellspacing="5">
-                <tr><th colspan="6">TUTORS</th></tr>
+        <div class="w3-container w3-padding" style="overflow-x:auto;">
+            <table align="center" cellspacing="5" class="w3-border w3-topbar w3-bottombar w3-border-blue w3-hover-shadow w3-round-large">
+                <tr class="w3-xlarge"><th colspan="6">TUTORS</th></tr>
                 <tr>
                     <td><b>Email</b></td>
                     <td><b>Tutor_id</b></td>
@@ -26,7 +26,7 @@
                 {% for i in list_tutors %}
                     <tr>
                         <td>{{ i.email }}</td>
-                        <td>{{ i.tutor_id }}</td>
+                        <td>{{ i.student_id }}</td>
                         <td>{{ i.name }}</td>
                         <td>{{ i.surname }}</td>
                         <td>{{ i.university }}</td>

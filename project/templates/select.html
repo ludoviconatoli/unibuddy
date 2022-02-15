@@ -44,7 +44,7 @@
             {% for i in posts.items %}
                 <div class="w3-left">
                     <span class="w3-text-teal">{{ i.name }} {{ i.surname }}</span>
-                    <span>: {{ i.text }}</span>
+                    <span> {{ i.text }}</span>
                 </div><br>
             {% endfor %}
             {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}

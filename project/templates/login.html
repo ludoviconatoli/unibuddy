@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if session['logged'] %}
-        <div class="w3-row-padding w3-padding-64 w3-container w3-center"
-             style="background: url('https://r.search.yahoo.com/_ylt=AwrJ5sw7w95hrUEAiZ4dDQx.;_ylu=c2VjA3NyBHNsawNpbWcEb2lkA2YzOGNkMmM0NTE2OWM4MjhjMjlhZWM4OTViZTM2MGJkBGdwb3MDMTIEaXQDYmluZw--/RV=2/RE=1642017723/RO=11/RU=https%3a%2f%2fwww.freepngimg.com%2fpng%2f34071-students-learning/RK=2/RS=C70GHYnv4y04GeRdqsNKeVMEzkE')">
+        <div class="w3-row-padding w3-padding-64 w3-container w3-center">
         <h1>LOGOUT</h1>
+        <!--<script>
+            function func(){
+                result = confirm('Do you really want to log out?')
+                if (result == false){
+                    window.open('{{ url_for('users.logout') }}#inizio')
+                }
+            }
+        </script>-->
         <form action="{{ url_for('users.logout') }}#inizio" method="POST">
             {{ logform.hidden_tag() }}<br>
             <div>

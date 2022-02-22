@@ -8,7 +8,7 @@ class Post(db.Model):
     author = db.Column(db.String(50), db.ForeignKey('student.email'), nullable=False)
     name = db.Column(db.String(30))
     surname = db.Column(db.String(30))
-    meetings_id = db.Column(db.Integer(), db.ForeignKey('meetings.id'), nullable=False)
+    meetings_id = db.Column(db.Integer(), db.ForeignKey('meetings.id'))
     text = db.Column(db.String(260))
 
     def __init__(self, author, meetings_id, text):

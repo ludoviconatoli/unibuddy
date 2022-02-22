@@ -21,7 +21,7 @@ def index():
         sum += i.rating
         num += 1
 
-    average = sum/num
+    average = round(sum/num, 1)
     return render_template("start.html", num_groups=num_groups, average=average)
 
 @main.route('/rate/', methods=["GET", "POST"])
@@ -61,7 +61,7 @@ def rate_tutor():
                             sum += i.rating
                             k += 1
 
-                        t.average_rating = sum / k
+                        t.average_rating = round(sum / k, 1)
                         db.session.commit()
                         return redirect(url_for('main.index'))
             flash('You have inserted a tutor of subjects you do not attend')

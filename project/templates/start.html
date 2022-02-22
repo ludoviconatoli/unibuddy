@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Unibuddy</title>
+<title>UniBuddy</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -61,11 +61,11 @@
 </div>
 
 <!-- Header -->
-<header class="back_start w3-display-container w3-blue w3-center w3-animate-zoom" style="padding:128px 16px;">
-    <img class="w3-round-xlarge" src="{{ url_for('static', filename='images/logo_senza_contorni2.png') }}" width="500" height="270" alt="Website Logo"/>
+<header class="back_start w3-display-container w3-center w3-animate-zoom" style="padding:128px 16px;">
+    <img class="w3-round-xlarge" src="{{ url_for('static', filename='images/logo.png') }}" width="500" height="270" alt="Website Logo"/>
     {% if session['logged'] %}
         <div class="w3-display-bottomcenter w3-margin">
-            <h2 class="w3-text-blue">Welcome {{ session['name'] }} {{ session['surname'] }}</h2>
+            <h2 class="w3-badge w3-white w3-round-large w3-text-blue">Welcome {{ session['name'] }} {{ session['surname'] }}</h2>
         </div>
     {% else %}
         <div class="w3-container">

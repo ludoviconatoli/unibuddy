@@ -52,7 +52,7 @@
                     </div>
                         {{ cform.submit(class="w3-button w3-blue w3-border w3-border-black w3-round-large") }}<br>
                         {% if cform.errors %}
-                            <div class="w3-container w3-padding">
+                            <div class="w3-container w3-padding w3-text-red">
                                 {% for error in cform.errors %}
                                     {{ error }}
                                 {% endfor %}

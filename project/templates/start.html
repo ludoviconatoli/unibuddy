@@ -8,12 +8,10 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/website_style.css">
     <style>
         body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
-        .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
-        .fa-anchor,.fa-graduation-cap {font-size:200px}
-        .back {background: url('https://www.centroitineris.it/wp-content/uploads/2018/09/Metodo-Studio.jpg');
-            background-repeat: no-repeat; background-position: center center; background-size: 100%;}
+        .w3-bar,h1,button,bt {font-family: "Montserrat", sans-serif}
     </style>
 </head>
 <body>
@@ -63,17 +61,15 @@
 </div>
 
 <!-- Header -->
-<header class="back w3-display-container w3-blue w3-center " style="padding:128px 16px; ">
-    <img class="w3-hover-shadow w3-round-xlarge" src="{{ url_for('static', filename='images/logo.png') }}" width="450" height="250" alt="Website Logo"/>
+<header class="back_start w3-display-container w3-blue w3-center w3-animate-zoom" style="padding:128px 16px;">
+    <img class="w3-round-xlarge" src="{{ url_for('static', filename='images/logo_senza_contorni2.png') }}" width="500" height="270" alt="Website Logo"/>
     {% if session['logged'] %}
         <div class="w3-display-bottomcenter w3-margin">
-            <h3 class="w3-text-black">{{ session['name'] }} {{ session['surname'] }}</h3>
+            <h2 class="w3-text-blue">Welcome {{ session['name'] }} {{ session['surname'] }}</h2>
         </div>
     {% else %}
         <div class="w3-container">
-            <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-round-large">
-                <a href="{{ url_for('users.login') }}" style="text-decoration: none">Get Started</a>
-            </button>
+             <a class="bt w3-btn w3-black w3-padding-large w3-large w3-margin-top w3-round-large w3-hover-blue" href="{{ url_for('users.login') }}">Get Started</a>
         </div>
     {% endif %}
 </header>
@@ -82,18 +78,18 @@
 <div class="w3-row-padding w3-padding-64 w3-container">
   <div class="w3-content">
     <div class="w3-twothird">
-      <h1>Unibuddy</h1>
+      <h1>UniBuddy</h1>
       <h5 class="w3-padding-32">Do you find difficult to study in your first experience at University? <br>
           Do you find difficult in studying alone? Do you prefer to study in groups?
       </h5>
 
-      <p class="w3-text-grey">We have the solution to your problems: UniBuddy <br>
-          UniBuddy is a platform in which students can organize groups to study the same subjects and confront themselves in the same problems.
+        <p class="w3-text-grey">We have the solution to your problems: UniBuddy </p>
+        <p class="w3-text-grey">UniBuddy is a platform in which students can organize groups to study the same subjects and confront themselves in the same problems.
           The platform was created as a site dedicated to the university students of the Politecnico to encourage an initial interaction between off-site students who may have difficulty in finding somebody to study and socialize with. </p>
     </div>
 
-    <div class="w3-third w3-center">
-      <i class="fa fa-anchor w3-padding-64 w3-text-blue"></i>
+    <div class="w3-third w3-padding-64 w3-center">
+        <img width="300" height="225" src="{{ url_for('static', filename='images/nuvoletta.jpg') }}">
     </div>
   </div>
 </div>
@@ -101,14 +97,14 @@
 <!-- Second Grid -->
 <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
   <div class="w3-content">
-    <div class="w3-third w3-center">
-        <i class="fa fa-graduation-cap w3-padding-64 w3-text-blue w3-margin-right"></i>
+    <div class="w3-third w3-padding-64">
+        <img class="w3-round-large w3-card-4" src="{{ url_for('static', filename='images/uni.jpg') }}">
     </div>
 
     <div class="w3-twothird">
       <h5 class="w3-padding-32">Groups have the possibility to find a place because they can book rooms in universities or use the multiple study rooms scattered around the city.
-          In each group there will be the opportunity to have tutor that has a very good knowledge in that subject in order to assure a good study and provide help assuring that you'll learn thanks to the meeting. Tutors are scholarship students that have received a good mark in the subject requested by the group and will be provided directly from Politecnico di Torino.
-          Unibuddy’s goal is to help students find answers to their problems and get inspired through respectful communication and strong sense of group commitment, aiming to help students understand the mechanics of the university environment. </h5>
+          In each group there will be the opportunity to have tutor that has a very good knowledge in that subject in order to assure a good study and provide help assuring that you'll learn thanks to the meeting. <br>
+          UniBuddy’s goal is to help students find answers to their problems and get inspired through respectful communication and strong sense of group commitment, aiming to help students understand the mechanics of the university environment. </h5>
     </div>
   </div>
 </div>
@@ -116,16 +112,16 @@
 <div class="w3-row w3-center w3-dark-grey w3-padding-32">
   <div class="w3-half w3-section">
     <span class="w3-badge w3-blue w3-xlarge">{{ num_groups }}</span><br>
-    Meetings
+    Meetings created
   </div>
   <div class="w3-half w3-section">
     <span class="w3-badge w3-blue w3-xlarge">{{ average }}</span><br>
-    Rated
+    Rated by users
   </div>
 </div>
 
-<div class="w3-container w3-grey w3-center w3-opacity w3-padding-16">
-    <h2>An investment in knowledge always pays the best interest</h2>
+<div class="w3-container w3-grey w3-center w3-padding-16">
+    <h2><i>An investment in knowledge always pays the best interest</i></h2>
     <p>-Benjamin Franklin-</p>
 </div>
 

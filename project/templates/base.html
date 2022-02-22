@@ -59,18 +59,18 @@
   </div>
   </div>
 
-  <header class="w3-display-container w3-blue w3-center" style="padding:128px 5px">
-      <img class="w3-round-xlarge" src="{{ url_for('static', filename='images/logo.png') }}" width="450" height="250" alt="Website Logo"/>
+  <header class="back_base w3-display-container w3-blue w3-center" style="padding:128px 5px">
+      <img class="w3-round-xlarge" src="{{ url_for('static', filename='images/logo_senza_contorni2.png') }}" width="500" height="270" alt="Website Logo"/>
       {% if session['logged'] %}
           <div class="w3-display-bottomcenter w3-margin">
-              <a name="inizio"><h3>{{ session['name'] }} {{ session['surname'] }}</h3></a>
+              <a name="inizio"><h2>{{ session['name'] }} {{ session['surname'] }}</h2></a>
           </div>
       {% endif %}
   </header>
     {% block content %}
     {% endblock content %}
 
-<footer class="w3-container w3-grey w3-padding-64">
+<footer class="w3-container w3-grey w3-padding-64 w3-opacity">
     <p>For any problem, <br>
        Do not hesitate to contact us: <br>
        unibuddywebsite@gmail.com

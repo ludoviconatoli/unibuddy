@@ -131,6 +131,10 @@ def abandon(id):
     group.students.remove(user)
     db.session.commit()
 
+    if group.email_tutor == user.email:
+        group.email_tutor = ""
+        db.session.commit()
+
     return redirect(url_for('meets.mygroups'))
 
 @meets.route('/delete/<int:id>')
@@ -158,7 +162,6 @@ def create(**kwargs):
     cform = FormCreate()
     cform.subject.choices = list_subjects
     if cform.validate_on_submit():
-        #controllare se l'headgroup è in altri meetings alla stessa ora
         for i in Meetings.query.filter_by(university=session.get('university'), study_course=session.get('study_course')):
             for k in i.students:
                 if(k.email == session.get('email') and i.date == cform.date.data and i.hour == cform.hour.data):
@@ -168,7 +171,6 @@ def create(**kwargs):
         if cform.email_tutor.data:
             if Tutor.query.filter_by(email=cform.email_tutor.data).first():
                 if session.get('tutor') and session.get('email') == cform.email_tutor.data:
-                    #Non completamente corretto
                     sub = Subjects.query.filter_by(university=session.get('university'),
                                                    subject=cform.subject.data).first()
                     meet = Meetings(university=session.get('university'), study_course=sub.study_course,
@@ -195,7 +197,7 @@ def create(**kwargs):
                                                                subject=cform.subject.data).first()
                                 meet = Meetings(university=session.get('university'),
                                                 study_course=session.get('study_course'),
-                                                subject_id=sub.subject_id, email_tutor=cform.email_tutor.data,
+                                                subject_id=sub.subject_id, email_tutor="",
                                                 email_headgroup=session.get('email'),
                                                 max_members=cform.max_members.data, num_participants=1,
                                                 date=cform.date.data,

@@ -2,18 +2,27 @@
 {% block content %}
     {% if session['logged'] %}
         <h1 class="w3-center">GROUPS</h1>
+        <div class="w3-row-padding w3-container w3-center">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <b>{{ message }}</b>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
         <div class="w3-padding-64" style="overflow-x:auto;">
             <table align="center" cellspacing="5">
                 <tr>
-                    <td><b>id group</b></td>
-                    <td><b>university</b></td>
-                    <td><b>subject</b></td>
-                    <td><b>email tutor</b></td>
-                    <td><b>email headgroup</b></td>
-                    <td><b>max members</b></td>
-                    <td><b>num participants</b></td>
-                    <td><b>day</b></td>
-                    <td><b>hour</b></td>
+                    <td><b>Id Group</b></td>
+                    <td><b>University</b></td>
+                    <td><b>Subject</b></td>
+                    <td><b>Email Tutor</b></td>
+                    <td><b>Email Headgroup</b></td>
+                    <td><b>Max Members</b></td>
+                    <td><b>Num Participants</b></td>
+                    <td><b>Day</b></td>
+                    <td><b>Hour</b></td>
                 </tr>
                 {% for i in meet %}
                     {% if i.max_members > i.num_participants and i.date >= today %}
@@ -32,15 +41,6 @@
                     {% endif %}
                 {% endfor %}
             </table>
-        </div>
-        <div class="w3-row-padding w3-padding-64 w3-container w3-center">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <b>{{ message }}</b>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
         </div>
     {% else %}
         <div class="w3-center">

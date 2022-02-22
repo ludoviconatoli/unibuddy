@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if session['logged'] %}
-        <div class="w3-container w3-center">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <b>{{ message }}</b>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-        </div>
         <div class="w3-container w3-padding-64 w3-center">
             <form action="{{ url_for('meets.add', id=group.id) }}#inizio" method="post">
-                <h3>Add a Tutor</h3>
+                <h1>Add a Tutor</h1>
+                <div class="w3-container w3-center">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <b>{{ message }}</b>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                </div>
                 <div class="w3-container">
                     {{ aform.hidden_tag() }}<br>
                     {{ aform.email.label }} {{ aform.email(class="w3-round-large") }}

@@ -16,15 +16,15 @@ input[type="radio"]:checked ~ label:before {
     color: #607d8b;
 }
 
+.post{
+    width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 input[type="radio"]:checked + label:before { color: #ffc107; }
 input[type="radio"] + label:hover ~ input + label:before { opacity: 0.6}
-
-.back_base{
-    background-image: url(images/base_back.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 100%;
-}
 
 .back_start{
     background-image: url(images/back_start.png);

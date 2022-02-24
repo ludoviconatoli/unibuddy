@@ -99,6 +99,7 @@ db.session.commit()
 db.session.add(tutor4)
 db.session.commit()
 
+
 meet1 = Meetings("Politecnico di Torino", "Management Engineering", "02PDWPH", "", "s302249@studenti.polito.it", 10, 1, datetime.date(2022, 3, 10), datetime.time(16, 30))
 meet1.students = [stud3]
 meet2 = Meetings("Politecnico di Torino", "Management Engineering", "05OIYPH", "", "s302572@studenti.polito.it", 5, 3, datetime.date(2022, 3, 12), datetime.time(14, 30))
@@ -107,6 +108,9 @@ meet3 = Meetings("Politecnico di Torino", "Ingegneria Gestionale", "16ACFPL", "s
 meet3.students = [stud2, stud4]
 meet4 = Meetings("Politecnico di Torino", "Management Engineering", "02PDWPH", "s204566@studenti.polito.it", "s204566@studenti.polito.it", 10, 1, datetime.date(2022, 3, 25), datetime.time(16, 30))
 meet4.students = [stud7]
+meet5 = Meetings("Politecnico di Torino", "Ingegneria Gestionale", "16ACFPL", "", "s402202@studenti.polito.it", 7, 1, datetime.date(2022, 3, 20), datetime.time(16, 30))
+meet5.students = [stud4]
+
 
 db.session.add(meet1)
 db.session.commit()
@@ -115,6 +119,8 @@ db.session.commit()
 db.session.add(meet3)
 db.session.commit()
 db.session.add(meet4)
+db.session.commit()
+db.session.add(meet5)
 db.session.commit()
 
 post1 = Post("s302572@studenti.polito.it", 2, "Hi guys")

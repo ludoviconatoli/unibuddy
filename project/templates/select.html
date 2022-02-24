@@ -35,30 +35,27 @@
             </tr>
         </table>
     </div>
-    <div class="w3-row">
-        <div class="w3-col s4 w3-center">
-            <p></p>
-        </div>
-        <div class="w3-col s4 w3-yellow w3-center w3-padding w3-border w3-round-large">
-            <h3 class="w3-text-red">Notice-board</h3>
-            {% for i in posts.items %}
-                <div class="w3-left">
-                    <span class="w3-text-teal">{{ i.name }} {{ i.surname }}</span>
-                    <span> {{ i.text }}</span>
-                </div><br>
-            {% endfor %}
-            {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-                {% if page_num %}
-                    {% if posts.page == page_num %}
-                        <a class="w3-btn w3-text-red" href="{{ url_for('meets.select', id=group.id, page=page_num) }}#inizio">{{ page_num }}</a>
-                    {% else %}
-                        <a class="w3-btn w3-text-red" href="{{ url_for('meets.select', id=group.id, page=page_num) }}#inizio">{{ page_num }}</a>
-                    {% endif %}
+
+    <div class="post w3-yellow w3-center w3-padding w3-border w3-round-large">
+         <h3 class="w3-text-red">Notice-board</h3>
+        {% for i in posts.items %}
+            <div class="w3-left">
+                <span class="w3-text-teal">{{ i.name }} {{ i.surname }}</span>
+                <span> {{ i.text }}</span>
+            </div><br>
+        {% endfor %}
+        {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                {% if posts.page == page_num %}
+                    <a class="w3-btn w3-text-red" href="{{ url_for('meets.select', id=group.id, page=page_num) }}#inizio">{{ page_num }}</a>
                 {% else %}
+                    <a class="w3-btn w3-text-red" href="{{ url_for('meets.select', id=group.id, page=page_num) }}#inizio">{{ page_num }}</a>
                 {% endif %}
-            {% endfor %}
-        </div>
+            {% else %}
+            {% endif %}
+        {% endfor %}
     </div>
+
 
     <div class="w3-container w3-center w3-padding-64">
         {% if session['email'] == group.email_tutor or session['email'] == group.email_headgroup %}

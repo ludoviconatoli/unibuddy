@@ -102,8 +102,7 @@ def mygroups():
 @meets.route('/mygroups/<int:id>', methods=["GET", "POST"])
 def select(id):
     group = Meetings.query.filter_by(id=id).first()
-    subject = Subjects.query.filter_by(
-        subject_id=group.subject_id, university=session.get('university'), study_course=session.get('study_course')).first()
+    subject = Subjects.query.filter_by(subject_id=group.subject_id, university=session.get('university'), study_course=session.get('study_course')).first()
 
     user = Student.query.filter_by(email=session.get('email')).first()
     jform = FormJoin()

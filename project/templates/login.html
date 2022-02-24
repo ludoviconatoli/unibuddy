@@ -3,14 +3,6 @@
     {% if session['logged'] %}
         <div class="w3-row-padding w3-padding-64 w3-container w3-center">
         <h1>LOGOUT</h1>
-        <!--<script>
-            function func(){
-                result = confirm('Do you really want to log out?')
-                if (result == false){
-                    window.open('{{ url_for('users.logout') }}#inizio')
-                }
-            }
-        </script>-->
         <form action="{{ url_for('users.logout') }}#inizio" method="POST">
             {{ logform.hidden_tag() }}<br>
             <div>

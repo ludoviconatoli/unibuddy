@@ -60,7 +60,7 @@
   </div>
 
   <header class="back_start w3-display-container w3-center" style="padding:128px 5px">
-      <img class="w3-round-xlarge" src="{{ url_for('static', filename='images/logo.png') }}" width="500" height="270" alt="Website Logo"/>
+      <img class="logo" src="{{ url_for('static', filename='images/logo.png') }}" width="500" height="270" alt="Website Logo"/>
       {% if session['logged'] %}
           <div class="w3-display-bottomcenter w3-margin">
               <a name="inizio"><h2 class="w3-badge w3-white w3-round-large w3-text-blue">{{ session['name'] }} {{ session['surname'] }}</h2></a>

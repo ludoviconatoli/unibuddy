@@ -62,7 +62,7 @@
 
 <!-- Header -->
 <header class="back_start w3-display-container w3-center w3-animate-zoom" style="padding:128px 16px;">
-    <img class="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Website Logo"/>
+    <img class="logo" src="{{ url_for('static', filename='images/logo.png') }}" width="500" height="270" alt="Website Logo"/>
     {% if session['logged'] %}
         <div class="w3-display-bottomcenter w3-margin">
             <h2 class="w3-badge w3-white w3-round-large w3-text-blue">Welcome {{ session['name'] }} {{ session['surname'] }}</h2>

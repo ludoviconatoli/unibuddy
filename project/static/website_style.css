@@ -23,7 +23,7 @@ input[type="radio"]:checked ~ label:before {
     margin-right: auto;
 }
 
-.logo {
+.logo{
     width: 500px;
     height: 270px;
     display: block;
@@ -40,3 +40,5 @@ input[type="radio"] + label:hover ~ input + label:before { opacity: 0.6}
     background-position: center center;
     background-size: 100%;
 }
+
+.t{overflow-x: auto}

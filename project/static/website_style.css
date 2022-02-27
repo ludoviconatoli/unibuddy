@@ -31,14 +31,35 @@ input[type="radio"]:checked ~ label:before {
     margin-right: auto;
 }
 
+.t{overflow-x: auto}
+
 input[type="radio"]:checked + label:before { color: #ffc107; }
 input[type="radio"] + label:hover ~ input + label:before { opacity: 0.6}
 
-.back_start{
+.header_start{
     background-image: url(images/back_start.png);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 100%;
+    padding: 128px 16px;
 }
 
-.t{overflow-x: auto}
+.header_base{
+    background-image: url(images/back_start.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100%;
+    padding: 128px 5px;
+}
+
+@media screen and (max-width: 600px){
+    .header_start{
+        background: steelblue;
+        padding: 128px 16px;
+    }
+
+    .header_base{
+        background: steelblue;
+        padding: 128px 5px;
+    }
+}

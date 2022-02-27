@@ -10,13 +10,6 @@ from project.config import config
 #app = Flask(__name__)
 #app.config.from_object(Config)
 
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#STATIC_URL = '/static/'
-#ALLOWED_HOSTS = ['myawesomedjangoapp.herokuapp.com']
-
-#export minuto 30
-
 #db = SQLAlchemy(app)
 #mail = Mail(app)
 

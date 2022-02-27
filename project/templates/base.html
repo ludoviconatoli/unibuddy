@@ -59,7 +59,7 @@
   </div>
   </div>
 
-  <header class="w3-display-container w3-center">
+  <header class="header_base w3-display-container w3-center">
       <img class="logo" src="{{ url_for('static', filename='images/logo.png') }}" width="500" height="270" alt="Website Logo"/>
       {% if session['logged'] %}
           <div class="w3-display-bottomcenter w3-margin">
@@ -81,5 +81,17 @@
     <i class="fa fa-linkedin-square w3-text-indigo" style="font-size:36px"></i>
 
 </footer>
+
+<script>
+// Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+</script>
 </body>
 </html>

@@ -1,9 +1,9 @@
 Hi,
-we are the team of Unibuddy and we are inviting you to join the meeting with id: {{ s }}
+we are the team of UniBuddy and we are inviting you to join the meeting with id: {{ s }}
 
 Please go to the website if you are available and join the group.
 If you are not available, please contact and inform the headgroup.
 
 Have a nice day
 
-Unibuddy
+UniBuddy
